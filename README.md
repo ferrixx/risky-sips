@@ -1,7 +1,7 @@
 # 🍻 Risky Sips  
 ### The Ultimate Truth or Dare Drinking Game  
 
-[![Risky Sips Logo](./assets/logo.png)](https://your-app-link.com)  
+[![Risky Sips Logo](./assets/logo.png)](https://ferrixx.de)  
 
 Turn any gathering into an unforgettable night with **Risky Sips** – the wildest Truth or Dare drinking game! Perfect for parties with friends or a romantic evening as a couple.  
 
@@ -55,3 +55,25 @@ Clone the repository:
 ```bash
 git clone https://github.com/your-username/risky-sips.git
 cd risky-sips
+npm install
+npx expo start
+```
+## 🔧 **Tech Stack**
+
+React Native & Expo – For cross-platform mobile development
+TypeScript – Strong typing for robust code
+In-App Purchases – Monetization through advanced levels
+Context API – State management for seamless navigation and point tracking
+
+## 🌐 **Download Now**
+Coming soon on:
+- App Store
+- Google Play
+
+## 📸 **Add Your Own Screenshots & GIFs**
+You can showcase your game screens by adding images in the assets folder and linking them here. For example:
+
+## 📜 **License**
+This project is licensed under the MIT License – see the LICENSE file for details.
+
+🎉 Have Fun and Take a Risky Sip!
