@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, FlatList, StyleSheet, Alert, ImageBackground } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
+import { settings } from '../data/settings';
 
 const levels = {
   duo: [
@@ -22,7 +23,7 @@ const LevelSelection = () => {
   const { players, type } = route.params;
 
   const handleLevelSelect = (level) => {
-    if (level.isFree) {
+    if (level.isFree || settings.isPremium) {
       navigation.navigate('GameScreen', { level: level.id, players });
     } else {
       Alert.alert(
@@ -47,7 +48,7 @@ const LevelSelection = () => {
             <View style={styles.levelItem}>
               <Text style={styles.levelName}>{item.name}</Text>
               <TouchableOpacity 
-                style={[styles.playButton, item.isFree ? styles.freeButton : styles.paidButton]} 
+                style={[styles.playButton, item.isFree || settings.isPremium ? styles.freeButton : styles.paidButton]} 
                 onPress={() => handleLevelSelect(item)}
               >
                 <Text style={styles.buttonText}>Spielen</Text>

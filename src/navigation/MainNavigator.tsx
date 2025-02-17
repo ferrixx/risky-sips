@@ -2,10 +2,10 @@ import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { NavigationContainer } from '@react-navigation/native';
 import StartScreen from '../screens/StartScreen';
-import TypeSelection from '../screens/TypeSelection';
-import PlayerSetup from '../screens/PlayerSetup';
-import LevelSelection from '../screens/LevelSelection';
-import GameScreen from '../screens/GameScreen';
+import TypeSelection from '../truthordare/TypeSelection';
+import PlayerSetup from '../truthordare/PlayerSetup';
+import LevelSelection from '../truthordare/LevelSelection';
+import GameScreen from '../truthordare/GameScreen';
 import SettingsScreen from '../screens/SettingsScreen';
 
 const Stack = createNativeStackNavigator();

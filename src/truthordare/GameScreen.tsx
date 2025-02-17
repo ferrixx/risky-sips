@@ -20,7 +20,7 @@ const GameScreen = () => {
     points: player.points || 0,
   }));
 
-  const maxPoints = 20;
+  const maxPoints = settings.maxPoints;
 
   const levelQuestions = level === 1 ? questions.level1 : questions.level2;
 
