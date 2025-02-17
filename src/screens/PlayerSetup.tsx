@@ -1,81 +1,103 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, FlatList, StyleSheet } from 'react-native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { RootStackParamList } from '../navigation/MainNavigator';
-import { useNavigation } from '@react-navigation/native';
-
-type Player = {
-  id: number;
-  name: string;
-  gender: 'männlich' | 'weiblich';
-};
-
-type PlayerSetupNavigationProp = NativeStackNavigationProp<RootStackParamList, 'PlayerSetup'>;
+import { View, Text, TextInput, FlatList, StyleSheet, TouchableOpacity, ImageBackground } from 'react-native';
+import { useNavigation, useRoute } from '@react-navigation/native';
+import { Ionicons } from '@expo/vector-icons';
 
 const PlayerSetup = () => {
-  const navigation = useNavigation<PlayerSetupNavigationProp>();
-  const [players, setPlayers] = useState<Player[]>([]);
   const [name, setName] = useState('');
-  const [gender, setGender] = useState<'männlich' | 'weiblich'>('männlich');
+  const [gender, setGender] = useState('');
+  const [players, setPlayers] = useState([]);
+  const navigation = useNavigation();
+  const route = useRoute();
+  const { type } = route.params;
 
   const addPlayer = () => {
-    if (name.trim() === '') return;
-    setPlayers([...players, { id: players.length + 1, name, gender }]);
-    setName('');
+    if (name && gender) {
+      setPlayers([...players, { id: players.length + 1, name, gender }]);
+      setName('');
+      setGender('');
+    }
+  };
+
+  const removePlayer = (id) => {
+    setPlayers(players.filter(player => player.id !== id));
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Spieler hinzufügen</Text>
-      <TextInput 
-        style={styles.input} 
-        placeholder="Name" 
-        value={name}
-        onChangeText={setName}
-      />
-      <View style={styles.buttonContainer}>
-        <Button 
-          title="Männlich" 
-          onPress={() => setGender('männlich')} 
-          color={gender === 'männlich' ? '#007bff' : '#ccc'}
+    <ImageBackground source={require('../../assets/background.jpg')} style={styles.background}>
+      <View style={styles.container}>
+        <Text style={styles.title}>Spieler Setup</Text>
+        <TextInput 
+          style={styles.input} 
+          placeholder="Name" 
+          value={name}
+          onChangeText={setName}
         />
-        <Button 
-          title="Weiblich" 
-          onPress={() => setGender('weiblich')} 
-          color={gender === 'weiblich' ? '#e83e8c' : '#ccc'}
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity 
+            style={[styles.genderButton, gender === 'männlich' && styles.selectedButton]} 
+            onPress={() => setGender('männlich')}
+          >
+            <Text style={styles.buttonText}>Männlich</Text>
+          </TouchableOpacity>
+          <TouchableOpacity 
+            style={[styles.genderButton, gender === 'weiblich' && styles.selectedButton]} 
+            onPress={() => setGender('weiblich')}
+          >
+            <Text style={styles.buttonText}>Weiblich</Text>
+          </TouchableOpacity>
+        </View>
+        <TouchableOpacity style={styles.addButton} onPress={addPlayer}>
+          <Text style={styles.buttonText}>Hinzufügen</Text>
+        </TouchableOpacity>
+
+        <FlatList 
+          data={players}
+          keyExtractor={(item) => item.id.toString()}
+          renderItem={({ item }) => (
+            <View style={styles.playerItemContainer}>
+              <Text style={styles.playerItem}>
+                {item.name} ({item.gender})
+              </Text>
+              <TouchableOpacity onPress={() => removePlayer(item.id)}>
+                <Ionicons name="close-circle" size={24} color="white" />
+              </TouchableOpacity>
+            </View>
+          )}
         />
+
+        <TouchableOpacity 
+          style={[styles.nextButton, players.length < 2 && styles.disabledButton]} 
+          onPress={() => navigation.navigate('LevelSelection', { players, type })} 
+          disabled={players.length < 2}
+        >
+          <Text style={styles.buttonText}>Weiter</Text>
+        </TouchableOpacity>
       </View>
-      <Button title="Hinzufügen" onPress={addPlayer} />
-
-      <FlatList 
-        data={players}
-        keyExtractor={(item) => item.id.toString()}
-        renderItem={({ item }) => (
-          <Text style={styles.playerItem}>
-            {item.name} ({item.gender})
-          </Text>
-        )}
-      />
-
-      <Button 
-        title="Weiter" 
-        onPress={() => navigation.navigate('LevelSelection')} 
-        disabled={players.length < 2}
-      />
-    </View>
+    </ImageBackground>
   );
 };
 
 const styles = StyleSheet.create({
+  background: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   container: {
     flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
     padding: 20,
-    backgroundColor: '#f5f5f5',
+    width: '100%',
   },
   title: {
-    fontSize: 28,
+    fontSize: 32,
     fontWeight: 'bold',
+    color: 'white',
     marginBottom: 20,
+    textAlign: 'center',
   },
   input: {
     borderWidth: 1,
@@ -83,15 +105,63 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 5,
     marginBottom: 10,
+    width: '80%',
+    backgroundColor: 'white',
   },
   buttonContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginBottom: 20,
+    width: '80%',
+  },
+  genderButton: {
+    flex: 1,
+    paddingVertical: 15,
+    paddingHorizontal: 30,
+    borderRadius: 10,
+    marginHorizontal: 5,
+    backgroundColor: '#ccc',
+    alignItems: 'center',
+  },
+  selectedButton: {
+    backgroundColor: '#007bff',
+  },
+  addButton: {
+    backgroundColor: '#28a745',
+    paddingVertical: 15,
+    paddingHorizontal: 30,
+    borderRadius: 10,
+    marginBottom: 20,
+    width: '80%',
+    alignItems: 'center',
+  },
+  nextButton: {
+    backgroundColor: '#28a745',
+    paddingVertical: 15,
+    paddingHorizontal: 10,
+    marginBottom: 300,
+    borderRadius: 10,
+    width: '80%',
+    alignItems: 'center',
+  },
+  disabledButton: {
+    backgroundColor: '#ccc',
+  },
+  buttonText: {
+    color: 'white',
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+  playerItemContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    width: '80%',
+    paddingVertical: 5,
   },
   playerItem: {
-    fontSize: 18,
-    paddingVertical: 5,
+    fontSize: 30,
+    color: 'white',
   },
 });
 

@@ -1,34 +1,25 @@
 import React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import MainMenu from '../screens/MainMenu';
+import { NavigationContainer } from '@react-navigation/native';
+import StartScreen from '../screens/StartScreen';
 import TypeSelection from '../screens/TypeSelection';
 import PlayerSetup from '../screens/PlayerSetup';
 import LevelSelection from '../screens/LevelSelection';
 import GameScreen from '../screens/GameScreen';
-import EndScreen from '../screens/EndScreen';
+import SettingsScreen from '../screens/SettingsScreen';
 
-export type RootStackParamList = {
-  MainMenu: undefined;
-  TypeSelection: undefined;
-  PlayerSetup: undefined;
-  LevelSelection: undefined;
-  GameScreen: undefined;
-  EndScreen: undefined;
-};
-
-const Stack = createNativeStackNavigator<RootStackParamList>();
+const Stack = createNativeStackNavigator();
 
 const MainNavigator = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="MainMenu">
-        <Stack.Screen name="MainMenu" component={MainMenu} options={{ title: 'Wahrheit oder Pflicht' }} />
-        <Stack.Screen name="TypeSelection" component={TypeSelection} options={{ title: 'Modus wählen' }} />
-        <Stack.Screen name="PlayerSetup" component={PlayerSetup} options={{ title: 'Spieler eingeben' }} />
-        <Stack.Screen name="LevelSelection" component={LevelSelection} options={{ title: 'Level auswählen' }} />
+      <Stack.Navigator initialRouteName="StartScreen">
+        <Stack.Screen name="StartScreen" component={StartScreen} options={{ title: 'Start' }} />
+        <Stack.Screen name="TypeSelection" component={TypeSelection} options={{ title: 'Spieltyp Auswahl' }} />
+        <Stack.Screen name="PlayerSetup" component={PlayerSetup} options={{ title: 'Spieler Setup' }} />
+        <Stack.Screen name="LevelSelection" component={LevelSelection} options={{ title: 'Level Auswahl' }} />
         <Stack.Screen name="GameScreen" component={GameScreen} options={{ title: 'Spiel' }} />
-        <Stack.Screen name="EndScreen" component={EndScreen} options={{ title: 'Spiel Ende' }} />
+        <Stack.Screen name="SettingsScreen" component={SettingsScreen} options={{ title: 'Einstellungen' }} />
       </Stack.Navigator>
     </NavigationContainer>
   );

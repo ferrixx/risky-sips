@@ -1,30 +1,29 @@
 import React from 'react';
-import { View, Text, Button, FlatList, StyleSheet, Alert } from 'react-native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { RootStackParamList } from '../navigation/MainNavigator';
-import { useNavigation } from '@react-navigation/native';
+import { View, Text, TouchableOpacity, FlatList, StyleSheet, Alert, ImageBackground } from 'react-native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 
-type Level = {
-  id: number;
-  name: string;
-  isFree: boolean;
+const levels = {
+  duo: [
+    { id: 1, name: 'Romantisch (Gratis)', isFree: true },
+    { id: 2, name: 'Intime Fragen', isFree: false },
+    { id: 3, name: 'Paare Herausforderungen', isFree: false },
+  ],
+  friends: [
+    { id: 1, name: 'Basic (Gratis)', isFree: true },
+    { id: 2, name: 'Challenges', isFree: false },
+    { id: 3, name: 'Dirty Secrets', isFree: false },
+    { id: 4, name: 'Party Extrem', isFree: false },
+  ],
 };
 
-type LevelSelectionNavigationProp = NativeStackNavigationProp<RootStackParamList, 'LevelSelection'>;
-
-const levels: Level[] = [
-  { id: 1, name: 'Basic (Gratis)', isFree: true },
-  { id: 2, name: 'Crazy Challenges', isFree: false },
-  { id: 3, name: 'Dirty Secrets', isFree: false },
-  { id: 4, name: 'Party Extrem', isFree: false },
-];
-
 const LevelSelection = () => {
-  const navigation = useNavigation<LevelSelectionNavigationProp>();
+  const navigation = useNavigation();
+  const route = useRoute();
+  const { players, type } = route.params;
 
-  const handleLevelSelect = (level: Level) => {
+  const handleLevelSelect = (level) => {
     if (level.isFree) {
-      navigation.navigate('GameScreen');
+      navigation.navigate('GameScreen', { level: level.id, players });
     } else {
       Alert.alert(
         'Level kaufen',
@@ -38,36 +37,49 @@ const LevelSelection = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Level auswählen</Text>
-      <FlatList 
-        data={levels}
-        keyExtractor={(item) => item.id.toString()}
-        renderItem={({ item }) => (
-          <View style={styles.levelItem}>
-            <Text style={styles.levelName}>{item.name}</Text>
-            <Button 
-              title="Spielen" 
-              onPress={() => handleLevelSelect(item)} 
-              color={item.isFree ? '#28a745' : '#ffc107'}
-            />
-          </View>
-        )}
-      />
-    </View>
+    <ImageBackground source={require('../../assets/background.jpg')} style={styles.background}>
+      <View style={styles.container}>
+        <Text style={styles.title}>Level auswählen</Text>
+        <FlatList 
+          data={levels[type]}
+          keyExtractor={(item) => item.id.toString()}
+          renderItem={({ item }) => (
+            <View style={styles.levelItem}>
+              <Text style={styles.levelName}>{item.name}</Text>
+              <TouchableOpacity 
+                style={[styles.playButton, item.isFree ? styles.freeButton : styles.paidButton]} 
+                onPress={() => handleLevelSelect(item)}
+              >
+                <Text style={styles.buttonText}>Spielen</Text>
+              </TouchableOpacity>
+            </View>
+          )}
+        />
+      </View>
+    </ImageBackground>
   );
 };
 
 const styles = StyleSheet.create({
+  background: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   container: {
     flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
     padding: 20,
-    backgroundColor: '#f5f5f5',
+    width: '100%',
   },
   title: {
-    fontSize: 28,
+    fontSize: 32,
     fontWeight: 'bold',
+    color: 'white',
     marginBottom: 20,
+    textAlign: 'center',
   },
   levelItem: {
     flexDirection: 'row',
@@ -82,9 +94,27 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     shadowRadius: 2,
     elevation: 3,
+    width: '100%',
   },
   levelName: {
     fontSize: 20,
+    color: '#333',
+  },
+  playButton: {
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 10,
+  },
+  freeButton: {
+    backgroundColor: '#28a745',
+  },
+  paidButton: {
+    backgroundColor: '#ffc107',
+  },
+  buttonText: {
+    color: 'white',
+    fontSize: 16,
+    fontWeight: 'bold',
   },
 });
 

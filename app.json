@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "trinkspiel-app",
-    "slug": "trinkspiel-app",
+    "slug": "riskysips",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -23,6 +23,12 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "c73f99b6-4336-4323-981c-0e5c5f6ecd20"
+      }
+    },
+    "owner": "ferrixx"
   }
 }

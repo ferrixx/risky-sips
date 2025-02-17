@@ -74,6 +74,6 @@ Coming soon on:
 You can showcase your game screens by adding images in the assets folder and linking them here. For example:
 
 ## 📜 **License**
-This project is licensed under the MIT License – see the LICENSE file for details.
+This project is licensed under the Apache License – see the LICENSE file for details.
 
 🎉 Have Fun and Take a Risky Sip!

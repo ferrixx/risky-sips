@@ -1,48 +1,64 @@
 import React from 'react';
-import { View, Text, Button, StyleSheet } from 'react-native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { RootStackParamList } from '../navigation/MainNavigator';
+import { View, Text, TouchableOpacity, StyleSheet, ImageBackground } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
-type TypeSelectionNavigationProp = NativeStackNavigationProp<RootStackParamList, 'TypeSelection'>;
-
 const TypeSelection = () => {
-  const navigation = useNavigation<TypeSelectionNavigationProp>();
+  const navigation = useNavigation();
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Wie wollt ihr spielen?</Text>
-      <View style={styles.buttonContainer}>
-        <Button 
-          title="Freunde" 
-          onPress={() => navigation.navigate('PlayerSetup')} 
-        />
+    <ImageBackground source={require('../../assets/background.jpg')} style={styles.background}>
+      <View style={styles.container}>
+        <Text style={styles.title}>Wie möchtest du spielen?</Text>
+        <TouchableOpacity style={[styles.button, styles.duoButton]} onPress={() => navigation.navigate('PlayerSetup', { type: 'duo' })}>
+          <Text style={styles.buttonText}>Als Paar</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={[styles.button, styles.friendsButton]} onPress={() => navigation.navigate('PlayerSetup', { type: 'friends' })}>
+          <Text style={styles.buttonText}>Mit Freunden</Text>
+        </TouchableOpacity>
       </View>
-      <View style={styles.buttonContainer}>
-        <Button 
-          title="Duo (Paar)" 
-          onPress={() => navigation.navigate('PlayerSetup')} 
-        />
-      </View>
-    </View>
+    </ImageBackground>
   );
 };
 
 const styles = StyleSheet.create({
+  background: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   container: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#f5f5f5',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    padding: 20,
+    width: '100%',
   },
   title: {
-    fontSize: 28,
+    fontSize: 32,
     fontWeight: 'bold',
-    marginBottom: 30,
+    color: 'white',
+    marginBottom: 40,
+    textAlign: 'center',
   },
-  buttonContainer: {
+  button: {
+    paddingVertical: 15,
+    paddingHorizontal: 30,
+    borderRadius: 10,
     marginVertical: 10,
-    width: '60%',
+    width: '80%',
+    alignItems: 'center',
+  },
+  duoButton: {
+    backgroundColor: '#ff69b4',
+  },
+  friendsButton: {
+    backgroundColor: '#1e90ff',
+  },
+  buttonText: {
+    color: 'white',
+    fontSize: 20,
+    fontWeight: 'bold',
   },
 });
 
