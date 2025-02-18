@@ -14,14 +14,14 @@ With crazy challenges, spicy questions, and hilarious dares, **Risky Sips** guar
 ---
 
 ## 📱 **Screenshots**  
-[![Homescreen](./assets/github/homescreen.PNG)]
-[![Settingsscreen](./assets/github/settingsscreen.PNG)]
+<img src="./assets/github/homescreen.PNG" alt="Homescreen" width="300" />
+<img src="./assets/github/settingsscreen.PNG" alt="Homescreen" width="300" />
 ### **TRUTH OR DARE GAME Screenshots**
-[![TypeSelection](./assets/github/typeselection.PNG)] 
-[![PlayerSetup](./assets/github/playersetup.PNG)] 
-[![LevelSelection](./assets/github/levelselection.PNG)] 
-[![Game](./assets/github/game.PNG)] 
-[![GameEnd](./assets/github/gameend.PNG)] 
+<img src="./assets/github/typeselection.PNG" alt="Homescreen" width="300" />
+<img src="./assets/github/playersetup.PNG" alt="Homescreen" width="300" />
+<img src="./assets/github/levelselection.PNG" alt="Homescreen" width="300" />
+<img src="./assets/github/game.PNG" alt="Homescreen" width="300" />
+<img src="./assets/github/gameend.PNG" alt="Homescreen" width="300" />
 
 ---
 
