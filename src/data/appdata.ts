@@ -1,5 +1,5 @@
 export const appdata = {
-    version: '0.0.8', // App Version
+    version: '0.0.9', // App Version
     env: 'dev', // App Environment ( dev, staging, prod )
     appName: 'Trinkspiel', // App Name
     appLogo: require('../../assets/logo.png'), // App Logo
