@@ -14,14 +14,21 @@ With crazy challenges, spicy questions, and hilarious dares, **Risky Sips** guar
 ---
 
 ## 📱 **Screenshots**  
-<img src="./assets/github/homescreen.PNG" alt="Homescreen" width="300" />
-<img src="./assets/github/settingsscreen.PNG" alt="Homescreen" width="300" />
+<div style="display: flex; justify-content: space-around;">
+  <img src="./assets/github/homescreen.PNG" alt="Homescreen" width="250" />
+  <img src="./assets/github/settingsscreen.PNG" alt="Settingsscreen" width="250" />
+</div>
+
 ### **TRUTH OR DARE GAME Screenshots**
-<img src="./assets/github/typeselection.PNG" alt="Homescreen" width="300" />
-<img src="./assets/github/playersetup.PNG" alt="Homescreen" width="300" />
-<img src="./assets/github/levelselection.PNG" alt="Homescreen" width="300" />
-<img src="./assets/github/game.PNG" alt="Homescreen" width="300" />
-<img src="./assets/github/gameend.PNG" alt="Homescreen" width="300" />
+<div style="display: flex; justify-content: space-around;">
+  <img src="./assets/github/typeselection.PNG" alt="Typeselection" width="250" />
+  <img src="./assets/github/playersetup.PNG" alt="Playersetup" width="250" />
+  <img src="./assets/github/levelselection.PNG" alt="Levelselection" width="250" />
+</div>
+<div style="display: flex; justify-content: space-around;">
+  <img src="./assets/github/game.PNG" alt="Game" width="250" />
+  <img src="./assets/github/gameend.PNG" alt="Gameend" width="250" />
+</div>
 
 ---
 
