@@ -1,9 +1,9 @@
 # 🍻 Risky Sips  
-### The Ultimate Truth or Dare Drinking Game  
+### The Ultimate Drinking Game  
 
 [![Risky Sips Logo](./assets/logo.png)](https://ferrixx.de)  
 
-Turn any gathering into an unforgettable night with **Risky Sips** – the wildest Truth or Dare drinking game! Perfect for parties with friends or a romantic evening as a couple.  
+Turn any gathering into an unforgettable night with **Risky Sips** – the wildest drinking game! Perfect for parties with friends or a romantic evening as a couple.  
 
 ---
 
@@ -14,23 +14,26 @@ With crazy challenges, spicy questions, and hilarious dares, **Risky Sips** guar
 ---
 
 ## 📱 **Screenshots**  
-Coming Soon!  
-<!-- Add your screenshots here -->  
-- Main Menu  
-- Player Setup  
-- Game Screen  
-- End Screen  
+[![Homescreen](./assets/github/homescreen.PNG)]
+[![Settingsscreen](./assets/github/settingsscreen.PNG)]
+### **TRUTH OR DARE GAME Screenshots**
+[![TypeSelection](./assets/github/typeselection.PNG)] 
+[![PlayerSetup](./assets/github/playersetup.PNG)] 
+[![LevelSelection](./assets/github/levelselection.PNG)] 
+[![Game](./assets/github/game.PNG)] 
+[![GameEnd](./assets/github/gameend.PNG)] 
 
 ---
 
 ## 🕹️ **How to Play**  
-1. Choose the number of players and enter their names and genders  
-2. Pick your game mode: **Friends** or **Couple (DUO)**  
-3. Select a difficulty level – **Basic is free**, unlock crazier levels with in-app purchases  
-4. Decide the order: **Random** or **In turn**  
-5. Choose **Truth** or **Dare** – then answer the question or complete the challenge!  
-6. Score points or lose them if you fail! (Random between 5 - 15 points)  
-7. First to **200 points** wins!  
+Choose which Game you wanna Play:
+ ### Truth or Dare:  
+    1. Pick your game mode: **Friends** or **Couple (DUO)**  
+    2. Setup you Players
+    3. Select a difficulty level – **Basic is free**, unlock crazier levels with in-app purchases  
+    4. Choose **Truth** or **Dare** – then answer the question or complete the challenge!  
+    5. Score points or lose them if you fail! (Random between 5 - 15 points)  
+    6. First to **200 points** wins! ( you can change the max Points in the Settings :) ) 
 
 ---
 
@@ -46,18 +49,6 @@ Coming Soon!
 
 ## 🚀 **Getting Started**  
 
-### **Prerequisites**  
-- [Node.js](https://nodejs.org/)  
-- [Expo CLI](https://docs.expo.dev/get-started/installation/)  
-
-### **Installation**  
-Clone the repository:  
-```bash
-git clone https://github.com/your-username/risky-sips.git
-cd risky-sips
-npm install
-npx expo start
-```
 ## 🔧 **Tech Stack**
 
 React Native & Expo – For cross-platform mobile development
@@ -69,9 +60,6 @@ Context API – State management for seamless navigation and point tracking
 Coming soon on:
 - App Store
 - Google Play
-
-## 📸 **Add Your Own Screenshots & GIFs**
-You can showcase your game screens by adding images in the assets folder and linking them here. For example:
 
 ## 📜 **License**
 This project is licensed under the Apache License – see the LICENSE file for details.
