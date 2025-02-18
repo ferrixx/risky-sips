@@ -1,12 +1,17 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ImageBackground, Image } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useIsFocused } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import * as Animatable from 'react-native-animatable';
 import { settings } from '../data/settings';
 
 const StartScreen = () => {
   const navigation = useNavigation();
+  const isFocused = useIsFocused();
+
+  useEffect(() => {
+    // Aktualisiere den Bildschirm, wenn er in den Fokus kommt
+  }, [isFocused]);
 
   return (
     <ImageBackground source={require('../../assets/background.jpg')} style={styles.background}>
@@ -15,7 +20,7 @@ const StartScreen = () => {
           <Ionicons name="settings" size={24} color="white" />
         </TouchableOpacity>
         <Animatable.Text animation="bounceInDown" style={styles.animatedTitle}>
-        <Image source={require('../../assets/logo.png')} style={styles.logo} />
+          <Image source={require('../../assets/logo.png')} style={styles.logo} />
         </Animatable.Text>
         <Text style={styles.title}>Willkommen zum Trinkspiel!</Text>
         {settings.isPremium && (

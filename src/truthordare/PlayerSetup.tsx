@@ -98,6 +98,7 @@ const styles = StyleSheet.create({
     color: 'white',
     marginBottom: 20,
     textAlign: 'center',
+    marginTop: 100,
   },
   input: {
     borderWidth: 1,

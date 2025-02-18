@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, Switch, ImageBackground, TouchableOpacity, TextInput, Alert } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import { settings } from '../data/settings';
 
 const SettingsScreen = () => {
+  const navigation = useNavigation();
   const [randomPlayerSelection, setRandomPlayerSelection] = useState(settings.randomPlayerSelection);
   const [language, setLanguage] = useState(settings.language);
   const [maxPoints, setMaxPoints] = useState(settings.maxPoints.toString());
@@ -31,7 +33,12 @@ const SettingsScreen = () => {
 
   const saveSettings = () => {
     settings.maxPoints = parseInt(maxPoints, 10);
-    Alert.alert('Einstellungen gespeichert', 'Deine Einstellungen wurden erfolgreich gespeichert.');
+    Alert.alert('Einstellungen gespeichert', 'Deine Einstellungen wurden erfolgreich gespeichert.', [
+      {
+        text: 'OK',
+        onPress: () => navigation.navigate('StartScreen'),
+      },
+    ]);
   };
 
   return (
@@ -102,6 +109,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: 'white',
     marginBottom: 20,
+    marginTop: 50,
   },
   settingItem: {
     flexDirection: 'row',

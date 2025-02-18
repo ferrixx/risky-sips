@@ -29,7 +29,10 @@ const GameScreen = () => {
   const [currentQuestion, setCurrentQuestion] = useState('');
   const [isTruth, setIsTruth] = useState<boolean | null>(null);
   const [showConfetti, setShowConfetti] = useState(false);
+  const [timer, setTimer] = useState(30); // Default Timer in Sekunden
+  const [timerStarted, setTimerStarted] = useState(false);
   const confettiRef = useRef(null);
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
 
   const currentPlayer = players[currentPlayerIndex];
 
@@ -40,15 +43,12 @@ const GameScreen = () => {
   };
 
   const nextPlayer = () => {
-    let nextIndex;
-    if (settings.randomPlayerSelection) {
-      nextIndex = Math.floor(Math.random() * players.length);
-    } else {
-      nextIndex = (currentPlayerIndex + 1) % players.length;
-    }
+    const nextIndex = (currentPlayerIndex + 1) % players.length;
     setCurrentPlayerIndex(nextIndex);
     setIsTruth(null);
     setCurrentQuestion('');
+    setTimer(30); // Reset Timer
+    setTimerStarted(false);
   };
 
   const updatePoints = (success: boolean) => {
@@ -100,13 +100,36 @@ const GameScreen = () => {
     setIsTruth(null);
     setCurrentQuestion('');
     setShowConfetti(false);
+    setTimer(30); // Reset Timer
+    setTimerStarted(false);
   };
 
   useEffect(() => {
     if (isTruth !== null) {
-      setCurrentQuestion(getRandomQuestion(isTruth ? 'truth' : 'dare'));
+      const question = getRandomQuestion(isTruth ? 'truth' : 'dare');
+      setCurrentQuestion(question.question);
+      setTimer(question.timer || 30); // Verwende den Timer der Frage oder den Standard-Timer
     }
   }, [isTruth]);
+
+  useEffect(() => {
+    if (currentQuestion !== '' && timerStarted && timer > 0) {
+      timerRef.current = setInterval(() => {
+        setTimer(prevTimer => {
+          if (prevTimer <= 1) {
+            clearInterval(timerRef.current!);
+            updatePoints(false); // Wenn der Timer abläuft, gilt die Aufgabe als nicht erfüllt
+            return 30; // Reset Timer
+          }
+          return prevTimer - 1;
+        });
+      }, 1000);
+    } else {
+      clearInterval(timerRef.current!);
+    }
+
+    return () => clearInterval(timerRef.current!);
+  }, [currentQuestion, timerStarted, timer]);
 
   return (
     <ImageBackground source={require('../../assets/background.jpg')} style={styles.background}>
@@ -138,6 +161,18 @@ const GameScreen = () => {
         {/* Frage / Aufgabe */}
         {currentQuestion !== '' && (
           <Text style={styles.questionText}>{currentQuestion}</Text>
+        )}
+
+        {/* Timer */}
+        {currentQuestion !== '' && timer > 0 && (
+          <Text style={styles.timerText}>Zeit: {timer} Sekunden</Text>
+        )}
+
+        {/* Timer-Start-Button */}
+        {currentQuestion !== '' && timer > 0 && !timerStarted && (
+          <TouchableOpacity onPress={() => setTimerStarted(true)} style={styles.startTimerButton}>
+            <Text style={styles.startTimerButtonText}>Timer starten</Text>
+          </TouchableOpacity>
         )}
 
         {/* Erfolgs-/Versagen-Buttons */}
@@ -212,6 +247,12 @@ const styles = StyleSheet.create({
     marginBottom: 30,
     textAlign: 'center',
   },
+  timerText: {
+    fontSize: 20,
+    color: '#f5f5f5',
+    fontWeight: 'bold',
+    marginBottom: 20,
+  },
   choiceContainer: {
     flexDirection: 'row',
     justifyContent: 'space-around',
@@ -230,6 +271,17 @@ const styles = StyleSheet.create({
     backgroundColor: '#e83e8c',
   },
   choiceButtonText: {
+    color: '#fff',
+    fontSize: 18,
+  },
+  startTimerButton: {
+    backgroundColor: '#007bff',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 10,
+    marginBottom: 20,
+  },
+  startTimerButtonText: {
     color: '#fff',
     fontSize: 18,
   },

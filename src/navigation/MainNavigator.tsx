@@ -13,13 +13,13 @@ const Stack = createNativeStackNavigator();
 const MainNavigator = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="StartScreen">
-        <Stack.Screen name="StartScreen" component={StartScreen} options={{ title: 'Start' }} />
-        <Stack.Screen name="TypeSelection" component={TypeSelection} options={{ title: 'Spieltyp Auswahl' }} />
-        <Stack.Screen name="PlayerSetup" component={PlayerSetup} options={{ title: 'Spieler Setup' }} />
-        <Stack.Screen name="LevelSelection" component={LevelSelection} options={{ title: 'Level Auswahl' }} />
-        <Stack.Screen name="GameScreen" component={GameScreen} options={{ title: 'Spiel' }} />
-        <Stack.Screen name="SettingsScreen" component={SettingsScreen} options={{ title: 'Einstellungen' }} />
+      <Stack.Navigator initialRouteName="StartScreen" screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="StartScreen" component={StartScreen} />
+        <Stack.Screen name="TypeSelection" component={TypeSelection} />
+        <Stack.Screen name="PlayerSetup" component={PlayerSetup} />
+        <Stack.Screen name="LevelSelection" component={LevelSelection} />
+        <Stack.Screen name="GameScreen" component={GameScreen} />
+        <Stack.Screen name="SettingsScreen" component={SettingsScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

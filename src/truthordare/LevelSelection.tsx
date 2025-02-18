@@ -2,18 +2,24 @@ import React from 'react';
 import { View, Text, TouchableOpacity, FlatList, StyleSheet, Alert, ImageBackground } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { settings } from '../data/settings';
+import * as Animatable from 'react-native-animatable';
+import { Ionicons } from '@expo/vector-icons';
 
 const levels = {
   duo: [
-    { id: 1, name: 'Romantisch (Gratis)', isFree: true },
-    { id: 2, name: 'Intime Fragen', isFree: false },
-    { id: 3, name: 'Paare Herausforderungen', isFree: false },
+    { id: 1, name: 'Klassisch', isFree: true, icon: 'game-controller' },
+    { id: 2, name: 'WTF', isFree: false, icon: 'beer' },
+    { id: 3, name: 'Hardcore', isFree: false, icon: 'skull-outline' },
+    { id: 4, name: 'Pärchen', isFree: false, icon: 'heart' },
+    { id: 5, name: 'DIRTY', isFree: false, icon: 'water' },
   ],
   friends: [
-    { id: 1, name: 'Basic (Gratis)', isFree: true },
-    { id: 2, name: 'Challenges', isFree: false },
-    { id: 3, name: 'Dirty Secrets', isFree: false },
-    { id: 4, name: 'Party Extrem', isFree: false },
+    { id: 1, name: 'Klassisch', isFree: true, icon: 'game-controller' },
+    { id: 2, name: 'WTF', isFree: false, icon: 'beer' },
+    { id: 3, name: 'Hardcore', isFree: false, icon: 'skull-outline' },
+    { id: 6, name: 'Mädelsabend', isFree: false, icon: 'rose-outline' },
+    { id: 7, name: 'im Freien', isFree: false, icon: 'leaf' },
+
   ],
 };
 
@@ -40,20 +46,23 @@ const LevelSelection = () => {
   return (
     <ImageBackground source={require('../../assets/background.jpg')} style={styles.background}>
       <View style={styles.container}>
-        <Text style={styles.title}>Level auswählen</Text>
+        <Animatable.Text animation="fadeInDown" style={styles.title}>Level auswählen</Animatable.Text>
         <FlatList 
           data={levels[type]}
           keyExtractor={(item) => item.id.toString()}
           renderItem={({ item }) => (
-            <View style={styles.levelItem}>
-              <Text style={styles.levelName}>{item.name}</Text>
+            <Animatable.View animation="fadeInUp" style={styles.levelItem}>
+              <View style={styles.levelInfo}>
+                <Ionicons name={item.icon} size={24} color="#333" style={styles.levelIcon} />
+                <Text style={styles.levelName}>{item.name}</Text>
+              </View>
               <TouchableOpacity 
                 style={[styles.playButton, item.isFree || settings.isPremium ? styles.freeButton : styles.paidButton]} 
                 onPress={() => handleLevelSelect(item)}
               >
-                <Text style={styles.buttonText}>Spielen</Text>
+                <Animatable.Text animation="pulse" iterationCount="infinite" style={styles.buttonText}>Spielen</Animatable.Text>
               </TouchableOpacity>
-            </View>
+            </Animatable.View>
           )}
         />
       </View>
@@ -81,30 +90,51 @@ const styles = StyleSheet.create({
     color: 'white',
     marginBottom: 20,
     textAlign: 'center',
+    marginTop: 50,
+    textShadowColor: 'rgba(0, 0, 0, 0.75)',
+    textShadowOffset: { width: -1, height: 1 },
+    textShadowRadius: 10,
   },
   levelItem: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     padding: 15,
-    marginVertical: 5,
+    marginVertical: 10,
     backgroundColor: '#fff',
     borderRadius: 10,
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 2,
-    elevation: 3,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+    elevation: 5,
     width: '100%',
+    borderWidth: 1,
+    borderColor: '#ddd',
+    transform: [{ scale: 1 }],
+  },
+  levelInfo: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  levelIcon: {
+    marginRight: 10,
   },
   levelName: {
     fontSize: 20,
     color: '#333',
+    fontWeight: 'bold',
   },
   playButton: {
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 10,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 2,
+    elevation: 3,
+    backgroundColor: 'linear-gradient(45deg, #ff6b6b, #f06595)',
   },
   freeButton: {
     backgroundColor: '#28a745',
@@ -116,6 +146,9 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 16,
     fontWeight: 'bold',
+    textShadowColor: 'rgba(0, 0, 0, 0.75)',
+    textShadowOffset: { width: -1, height: 1 },
+    textShadowRadius: 10,
   },
 });
 
