@@ -4,22 +4,23 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import { settings } from '../data/settings';
 import * as Animatable from 'react-native-animatable';
 import { Ionicons } from '@expo/vector-icons';
+import { appdata } from '../data/appdata';
+import { getTranslation } from '../utils/translationHelper';
 
 const levels = {
   duo: [
-    { id: 1, name: 'Klassisch', isFree: true, icon: 'game-controller' },
-    { id: 2, name: 'WTF', isFree: false, icon: 'beer' },
-    { id: 3, name: 'Hardcore', isFree: false, icon: 'skull-outline' },
-    { id: 4, name: 'Pärchen', isFree: false, icon: 'heart' },
-    { id: 5, name: 'DIRTY', isFree: false, icon: 'water' },
+    { id: 1, name: 'truthordareLevel1', isFree: true, icon: 'game-controller' },
+    { id: 2, name: 'truthordareLevel2', isFree: false, icon: 'beer' },
+    { id: 3, name: 'truthordareLevel3', isFree: false, icon: 'skull-outline' },
+    { id: 4, name: 'truthordareLevel4', isFree: false, icon: 'heart' },
+    { id: 5, name: 'truthordareLevel5', isFree: false, icon: 'water' },
   ],
   friends: [
-    { id: 1, name: 'Klassisch', isFree: true, icon: 'game-controller' },
-    { id: 2, name: 'WTF', isFree: false, icon: 'beer' },
-    { id: 3, name: 'Hardcore', isFree: false, icon: 'skull-outline' },
-    { id: 6, name: 'Mädelsabend', isFree: false, icon: 'rose-outline' },
-    { id: 7, name: 'im Freien', isFree: false, icon: 'leaf' },
-
+    { id: 1, name: 'truthordareLevel1', isFree: true, icon: 'game-controller' },
+    { id: 2, name: 'truthordareLevel2', isFree: false, icon: 'beer' },
+    { id: 3, name: 'truthordareLevel3', isFree: false, icon: 'skull-outline' },
+    { id: 6, name: 'truthordareLevel6', isFree: false, icon: 'rose-outline' },
+    { id: 7, name: 'truthordareLevel7', isFree: false, icon: 'leaf' },
   ],
 };
 
@@ -30,7 +31,7 @@ const LevelSelection = () => {
 
   const handleLevelSelect = (level) => {
     if (level.isFree || settings.isPremium) {
-      navigation.navigate('GameScreen', { level: level.id, players });
+      navigation.navigate('GameScreen', { level: level.id, players, type });
     } else {
       Alert.alert(
         'Level kaufen',
@@ -44,9 +45,9 @@ const LevelSelection = () => {
   };
 
   return (
-    <ImageBackground source={require('../../assets/background.jpg')} style={styles.background}>
+    <ImageBackground source={appdata.appBackground} style={styles.background}>
       <View style={styles.container}>
-        <Animatable.Text animation="fadeInDown" style={styles.title}>Level auswählen</Animatable.Text>
+        <Animatable.Text animation="fadeInDown" style={styles.title}>{getTranslation('truthordareLevelSelectionTitle')}</Animatable.Text>
         <FlatList 
           data={levels[type]}
           keyExtractor={(item) => item.id.toString()}
@@ -54,13 +55,13 @@ const LevelSelection = () => {
             <Animatable.View animation="fadeInUp" style={styles.levelItem}>
               <View style={styles.levelInfo}>
                 <Ionicons name={item.icon} size={24} color="#333" style={styles.levelIcon} />
-                <Text style={styles.levelName}>{item.name}</Text>
+                <Text style={styles.levelName}>{getTranslation(item.name)}</Text>
               </View>
               <TouchableOpacity 
                 style={[styles.playButton, item.isFree || settings.isPremium ? styles.freeButton : styles.paidButton]} 
                 onPress={() => handleLevelSelect(item)}
               >
-                <Animatable.Text animation="pulse" iterationCount="infinite" style={styles.buttonText}>Spielen</Animatable.Text>
+                <Animatable.Text animation="pulse" iterationCount="infinite" style={styles.buttonText}>{getTranslation('truthordareLevelSelect')}</Animatable.Text>
               </TouchableOpacity>
             </Animatable.View>
           )}
@@ -134,7 +135,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.3,
     shadowRadius: 2,
     elevation: 3,
-    backgroundColor: 'linear-gradient(45deg, #ff6b6b, #f06595)',
   },
   freeButton: {
     backgroundColor: '#28a745',

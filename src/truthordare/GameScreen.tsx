@@ -6,6 +6,8 @@ import { RootStackParamList } from '../navigation/MainNavigator';
 import ConfettiCannon from 'react-native-confetti-cannon';
 import { questions } from '../data/questions';
 import { settings } from '../data/settings';
+import { appdata } from '../data/appdata';
+import { getTranslation } from '../utils/translationHelper';
 
 type GameScreenRouteProp = RouteProp<RootStackParamList, 'GameScreen'>;
 
@@ -56,28 +58,28 @@ const GameScreen = () => {
     const newPoints = success
       ? currentPlayer.points + pointChange
       : currentPlayer.points - pointChange;
-
+  
     const updatedPlayers = [...players];
     updatedPlayers[currentPlayerIndex] = {
       ...currentPlayer,
       points: newPoints
     };
-
+  
     setPlayers(updatedPlayers);
-
+  
     // Spielende prüfen
     if (newPoints >= maxPoints) {
       setShowConfetti(true);
       Alert.alert(
-        'Spiel vorbei!',
-        `${currentPlayer.name} hat gewonnen! 🎉`,
+        getTranslation('truthordareGameEnd'),
+        `${currentPlayer.name} ${getTranslation('truthordareGameEndText')}`,
         [
           {
-            text: 'Im aktuellen Level bleiben',
+            text: getTranslation('truthordareGameEndReset'),
             onPress: () => resetGame(),
           },
           {
-            text: 'Zum nächsten Level wechseln',
+            text: getTranslation('truthordareGameEndNextLevel'),
             onPress: () => {
               resetGame();
               navigation.navigate('LevelSelection', { players: updatedPlayers, type });
@@ -132,7 +134,7 @@ const GameScreen = () => {
   }, [currentQuestion, timerStarted, timer]);
 
   return (
-    <ImageBackground source={require('../../assets/background.jpg')} style={styles.background}>
+      <ImageBackground source={appdata.appBackground} style={styles.background}>
       <View style={styles.container}>
         {/* Punkte-Anzeige als Bar */}
         <View style={styles.pointsContainer}>
@@ -142,19 +144,19 @@ const GameScreen = () => {
             color={'#4caf50'} 
             height={20}
           />
-          <Text style={styles.pointsText}>Punkte {currentPlayer.points} / {maxPoints}</Text>
+          <Text style={styles.pointsText}>{getTranslation('truthordareGamePoints')} {currentPlayer.points} / {maxPoints}</Text>
         </View>
 
         {/* Spielername */}
-        <Text style={styles.currentPlayerText}>{currentPlayer.name} ist dran!</Text>
+        <Text style={styles.currentPlayerText}>{currentPlayer.name} {getTranslation('truthordareGameCurrentPlayer')}</Text>
 
         {/* Wahrheit und Pflicht Auswahl */}
         <View style={styles.choiceContainer}>
           <TouchableOpacity onPress={() => setIsTruth(true)} style={[styles.choiceButton, styles.truthButton]}>
-            <Text style={styles.choiceButtonText}>Wahrheit</Text>
+            <Text style={styles.choiceButtonText}>{getTranslation('truthordareGameTruthSelectButton')}</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={() => setIsTruth(false)} style={[styles.choiceButton, styles.dareButton]}>
-            <Text style={styles.choiceButtonText}>Pflicht</Text>
+            <Text style={styles.choiceButtonText}>{getTranslation('truthordareGameDareSelectButton')}</Text>
           </TouchableOpacity>
         </View>
 
@@ -165,13 +167,13 @@ const GameScreen = () => {
 
         {/* Timer */}
         {currentQuestion !== '' && timer > 0 && (
-          <Text style={styles.timerText}>Zeit: {timer} Sekunden</Text>
+          <Text style={styles.timerText}>{getTranslation('truthordareGameTimer')}: {timer} {getTranslation('truthordareGameTimerSeconds')}</Text>
         )}
 
         {/* Timer-Start-Button */}
         {currentQuestion !== '' && timer > 0 && !timerStarted && (
           <TouchableOpacity onPress={() => setTimerStarted(true)} style={styles.startTimerButton}>
-            <Text style={styles.startTimerButtonText}>Timer starten</Text>
+            <Text style={styles.startTimerButtonText}>{getTranslation('truthordareGameTimerStartButton')}</Text>
           </TouchableOpacity>
         )}
 
@@ -179,10 +181,10 @@ const GameScreen = () => {
         {currentQuestion !== '' && (
           <View style={styles.resultContainer}>
             <TouchableOpacity onPress={() => updatePoints(true)} style={[styles.resultButton, styles.successButton]}>
-              <Text style={styles.resultButtonText}>Erfolgreich</Text>
+              <Text style={styles.resultButtonText}>{getTranslation('truthordareGameSuccessButton')}</Text>
             </TouchableOpacity>
             <TouchableOpacity onPress={() => updatePoints(false)} style={[styles.resultButton, styles.failButton]}>
-              <Text style={styles.resultButtonText}>Versagt</Text>
+              <Text style={styles.resultButtonText}>{getTranslation('truthordareGameFailButton')}</Text>
             </TouchableOpacity>
           </View>
         )}

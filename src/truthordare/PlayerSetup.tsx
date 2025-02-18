@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, FlatList, StyleSheet, TouchableOpacity, ImageBackground } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
+import { appdata } from '../data/appdata';
+import { getTranslation } from '../utils/translationHelper';
 
 const PlayerSetup = () => {
   const [name, setName] = useState('');
@@ -24,12 +26,12 @@ const PlayerSetup = () => {
   };
 
   return (
-    <ImageBackground source={require('../../assets/background.jpg')} style={styles.background}>
+        <ImageBackground source={appdata.appBackground} style={styles.background}>
       <View style={styles.container}>
-        <Text style={styles.title}>Spieler Setup</Text>
+        <Text style={styles.title}>{getTranslation('truthordarePlayerSetupTitle')}</Text>
         <TextInput 
           style={styles.input} 
-          placeholder="Name" 
+          placeholder={getTranslation('truthordarePlayerName')} 
           value={name}
           onChangeText={setName}
         />
@@ -38,17 +40,17 @@ const PlayerSetup = () => {
             style={[styles.genderButton, gender === 'männlich' && styles.selectedButton]} 
             onPress={() => setGender('männlich')}
           >
-            <Text style={styles.buttonText}>Männlich</Text>
+            <Text style={styles.buttonText}>{getTranslation('truthordarePlayerMan')}</Text>
           </TouchableOpacity>
           <TouchableOpacity 
             style={[styles.genderButton, gender === 'weiblich' && styles.selectedButton]} 
             onPress={() => setGender('weiblich')}
           >
-            <Text style={styles.buttonText}>Weiblich</Text>
+            <Text style={styles.buttonText}>{getTranslation('truthordarePlayerGirl')}</Text>
           </TouchableOpacity>
         </View>
         <TouchableOpacity style={styles.addButton} onPress={addPlayer}>
-          <Text style={styles.buttonText}>Hinzufügen</Text>
+          <Text style={styles.buttonText}>{getTranslation('truthordarePlayerAdd')}</Text>
         </TouchableOpacity>
 
         <FlatList 
@@ -71,7 +73,7 @@ const PlayerSetup = () => {
           onPress={() => navigation.navigate('LevelSelection', { players, type })} 
           disabled={players.length < 2}
         >
-          <Text style={styles.buttonText}>Weiter</Text>
+          <Text style={styles.buttonText}>{getTranslation('truthordarePlayerSetupNext')}</Text>
         </TouchableOpacity>
       </View>
     </ImageBackground>

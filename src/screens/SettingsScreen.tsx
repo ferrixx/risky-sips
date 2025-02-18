@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, Switch, ImageBackground, TouchableOpacity, TextInput, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { settings } from '../data/settings';
+import { appdata } from '../data/appdata';
+import { getTranslation } from '../utils/translationHelper';
 
 const SettingsScreen = () => {
   const navigation = useNavigation();
@@ -33,7 +35,7 @@ const SettingsScreen = () => {
 
   const saveSettings = () => {
     settings.maxPoints = parseInt(maxPoints, 10);
-    Alert.alert('Einstellungen gespeichert', 'Deine Einstellungen wurden erfolgreich gespeichert.', [
+    Alert.alert(getTranslation('settingsSavedHead'), getTranslation('settingsSavedText'), [
       {
         text: 'OK',
         onPress: () => navigation.navigate('StartScreen'),
@@ -42,18 +44,18 @@ const SettingsScreen = () => {
   };
 
   return (
-    <ImageBackground source={require('../../assets/background.jpg')} style={styles.background}>
+      <ImageBackground source={appdata.appBackground} style={styles.background}>
       <View style={styles.container}>
-        <Text style={styles.title}>Einstellungen</Text>
+        <Text style={styles.title}>{getTranslation('settings')}</Text>
         <View style={styles.settingItem}>
-          <Text style={styles.settingText}>Zufällige Spielerwahl</Text>
+          <Text style={styles.settingText}>{getTranslation('settingsRandomPlayer')}</Text>
           <Switch
             value={randomPlayerSelection}
             onValueChange={toggleRandomPlayerSelection}
           />
         </View>
         <View style={styles.settingItem}>
-          <Text style={styles.settingText}>Sprache</Text>
+          <Text style={styles.settingText}>{getTranslation('settingsLanguage')}</Text>
           <View style={styles.languageContainer}>
             <TouchableOpacity onPress={() => changeLanguage('de_DE')}>
               <Text style={[styles.flag, language === 'de_DE' ? styles.activeFlag : styles.inactiveFlag]}>
@@ -68,7 +70,7 @@ const SettingsScreen = () => {
           </View>
         </View>
         <View style={styles.settingItem}>
-          <Text style={styles.settingText}>Maximale Punkte</Text>
+          <Text style={styles.settingText}>{getTranslation('settingsMaxPoints')}</Text>
           <TextInput
             style={styles.input}
             value={maxPoints}
@@ -77,14 +79,14 @@ const SettingsScreen = () => {
           />
         </View>
         <View style={styles.settingItem}>
-          <Text style={styles.settingText}>Premium aktivieren</Text>
+          <Text style={styles.settingText}>{getTranslation('settingsPremium')}</Text>
           <Switch
             value={isPremium}
             onValueChange={togglePremium}
           />
         </View>
         <TouchableOpacity style={styles.saveButton} onPress={saveSettings}>
-          <Text style={styles.saveButtonText}>Speichern</Text>
+          <Text style={styles.saveButtonText}>{getTranslation('settingsSave')}</Text>
         </TouchableOpacity>
       </View>
     </ImageBackground>

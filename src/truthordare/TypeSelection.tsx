@@ -1,19 +1,21 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, ImageBackground } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { appdata } from '../data/appdata';
+import { getTranslation } from '../utils/translationHelper';
 
 const TypeSelection = () => {
   const navigation = useNavigation();
 
   return (
-    <ImageBackground source={require('../../assets/background.jpg')} style={styles.background}>
+      <ImageBackground source={appdata.appBackground} style={styles.background}>
       <View style={styles.container}>
-        <Text style={styles.title}>Wie möchtest du spielen?</Text>
+        <Text style={styles.title}>{getTranslation('truthordareTitle')}</Text>
         <TouchableOpacity style={[styles.button, styles.duoButton]} onPress={() => navigation.navigate('PlayerSetup', { type: 'duo' })}>
-          <Text style={styles.buttonText}>Als Paar</Text>
+          <Text style={styles.buttonText}>{getTranslation('truthordareDuo')}</Text>
         </TouchableOpacity>
         <TouchableOpacity style={[styles.button, styles.friendsButton]} onPress={() => navigation.navigate('PlayerSetup', { type: 'friends' })}>
-          <Text style={styles.buttonText}>Mit Freunden</Text>
+          <Text style={styles.buttonText}>{getTranslation('truthordareFriends')}</Text>
         </TouchableOpacity>
       </View>
     </ImageBackground>

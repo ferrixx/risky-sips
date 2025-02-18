@@ -4,6 +4,9 @@ import { useNavigation, useIsFocused } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import * as Animatable from 'react-native-animatable';
 import { settings } from '../data/settings';
+import Constants from 'expo-constants';
+import { getTranslation } from '../utils/translationHelper';
+import { appdata } from '../data/appdata';
 
 const StartScreen = () => {
   const navigation = useNavigation();
@@ -22,15 +25,16 @@ const StartScreen = () => {
         <Animatable.Text animation="bounceInDown" style={styles.animatedTitle}>
           <Image source={require('../../assets/logo.png')} style={styles.logo} />
         </Animatable.Text>
-        <Text style={styles.title}>Willkommen zum Trinkspiel!</Text>
+        <Text style={styles.title}>{getTranslation('welcome')}</Text>
         {settings.isPremium && (
-          <Text style={styles.premiumText}>Premium Benutzer</Text>
+          <Text style={styles.premiumText}>{getTranslation('premiumUser')}</Text>
         )}
         <Animatable.View animation="pulse" iterationCount="infinite">
           <TouchableOpacity style={styles.startButton} onPress={() => navigation.navigate('TypeSelection')}>
-            <Text style={styles.startButtonText}>Wahrheit oder Pflicht starten</Text>
+            <Text style={styles.startButtonText}>{getTranslation('truthordareStart')}</Text>
           </TouchableOpacity>
         </Animatable.View>
+        <Text style={styles.version}>{getTranslation('version')}: {appdata.version}</Text>
       </View>
     </ImageBackground>
   );
@@ -89,6 +93,13 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 18,
     fontWeight: 'bold',
+  },
+  version: {
+    position: 'absolute',
+    bottom: 20,
+    left: 20,
+    fontSize: 20,
+    color: '#fff',
   },
 });
 
