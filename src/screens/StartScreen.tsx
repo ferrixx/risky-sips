@@ -30,8 +30,18 @@ const StartScreen = () => {
           <Text style={styles.premiumText}>{getTranslation('premiumUser')}</Text>
         )}
         <Animatable.View animation="pulse" iterationCount="infinite">
-          <TouchableOpacity style={styles.startButton} onPress={() => navigation.navigate('TypeSelection')}>
+          <TouchableOpacity style={styles.startButtonTruthorDare} onPress={() => navigation.navigate('TypeSelection')}>
             <Text style={styles.startButtonText}>{getTranslation('truthordareStart')}</Text>
+          </TouchableOpacity>
+          </Animatable.View>
+        <Animatable.View animation="pulse" iterationCount="infinite">
+          <TouchableOpacity style={styles.startButtonBottleSpin} onPress={() => navigation.navigate('TypeSelection')}>
+          <Text style={styles.startButtonText}>{getTranslation('bottlespinStart')}</Text>
+          </TouchableOpacity>
+          </Animatable.View>
+        <Animatable.View animation="pulse" iterationCount="infinite">
+          <TouchableOpacity style={styles.startButtonDice} onPress={() => navigation.navigate('TypeSelection')}>
+          <Text style={styles.startButtonText}>{getTranslation('diceStart')}</Text>
           </TouchableOpacity>
         </Animatable.View>
         <Text style={styles.version}>{getTranslation('version')}: {appdata.version}</Text>
@@ -83,16 +93,33 @@ const styles = StyleSheet.create({
     color: 'gold',
     marginBottom: 20,
   },
-  startButton: {
-    backgroundColor: '#28a745',
+  startButtonTruthorDare: {
+    backgroundColor: '#00d1ff',
     paddingVertical: 15,
     paddingHorizontal: 30,
     borderRadius: 10,
+    marginTop: 20,
+  },
+  startButtonBottleSpin: {
+    backgroundColor: '#a6ff00',
+    paddingVertical: 15,
+    paddingHorizontal: 30,
+    borderRadius: 10,
+    marginTop: 20,
+  },
+  startButtonDice: {
+    backgroundColor: '#e83e8c',
+    paddingVertical: 15,
+    paddingHorizontal: 30,
+    borderRadius: 10,
+    marginTop: 20,
+    textAlign: 'center',
   },
   startButtonText: {
     color: 'white',
-    fontSize: 18,
+    fontSize: 25,
     fontWeight: 'bold',
+    textAlign: 'center',
   },
   version: {
     position: 'absolute',

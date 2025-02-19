@@ -179,6 +179,7 @@ const styles = StyleSheet.create({
   },
   startGameButton: {
     marginTop: 20,
+    marginBottom: 20,
     paddingVertical: 15,
     paddingHorizontal: 30,
     borderRadius: 10,
@@ -186,7 +187,7 @@ const styles = StyleSheet.create({
   },
   startGameButtonText: {
     color: 'white',
-    fontSize: 18,
+    fontSize: 25,
     fontWeight: 'bold',
   },
 });

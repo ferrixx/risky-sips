@@ -10,6 +10,7 @@ const SettingsScreen = () => {
   const [randomPlayerSelection, setRandomPlayerSelection] = useState(settings.randomPlayerSelection);
   const [language, setLanguage] = useState(settings.language);
   const [maxPoints, setMaxPoints] = useState(settings.maxPoints.toString());
+  const [maxTime, setMaxTime] = useState(settings.maxTime.toString());
   const [isPremium, setIsPremium] = useState(settings.isPremium);
 
   const toggleRandomPlayerSelection = () => {
@@ -25,6 +26,10 @@ const SettingsScreen = () => {
 
   const changeMaxPoints = (newMaxPoints) => {
     setMaxPoints(newMaxPoints);
+  };
+
+  const changeMaxTime = (newMaxTime) => {
+    setMaxTime(newMaxTime);
   };
 
   const togglePremium = () => {
@@ -46,14 +51,35 @@ const SettingsScreen = () => {
   return (
       <ImageBackground source={appdata.appBackground} style={styles.background}>
       <View style={styles.container}>
-        <Text style={styles.title}>{getTranslation('settings')}</Text>
+        <Text style={styles.title}>{getTranslation('settingsTitle')}</Text>
+        <Text style={styles.catTitle}>{getTranslation('truthordareSettingsTitle')}</Text>
         <View style={styles.settingItem}>
-          <Text style={styles.settingText}>{getTranslation('settingsRandomPlayer')}</Text>
+          <Text style={styles.settingText}>{getTranslation('settingsRandomPlayer')}:</Text>
           <Switch
             value={randomPlayerSelection}
             onValueChange={toggleRandomPlayerSelection}
           />
         </View>
+        <View style={styles.settingItem}>
+          <Text style={styles.settingText}>{getTranslation('settingsMaxPoints')}:</Text>
+          <TextInput
+            style={styles.input}
+            value={maxPoints}
+            onChangeText={changeMaxPoints}
+            keyboardType="numeric"
+          />
+        </View>
+        <View style={styles.settingItem}>
+          <Text style={styles.settingText}>{getTranslation('settingsMaxTime')}:</Text>
+          <Text style={styles.settingsubText}>{getTranslation('settingsMaxTimeSub')}:</Text>
+          <TextInput
+            style={styles.input}
+            value={maxTime}
+            onChangeText={changeMaxTime}
+            keyboardType="numeric"
+          />
+        </View>
+        <Text style={styles.catTitle}>{getTranslation('generelSettingsTitle')}</Text>
         <View style={styles.settingItem}>
           <Text style={styles.settingText}>{getTranslation('settingsLanguage')}</Text>
           <View style={styles.languageContainer}>
@@ -68,15 +94,6 @@ const SettingsScreen = () => {
               </Text>
             </TouchableOpacity>
           </View>
-        </View>
-        <View style={styles.settingItem}>
-          <Text style={styles.settingText}>{getTranslation('settingsMaxPoints')}</Text>
-          <TextInput
-            style={styles.input}
-            value={maxPoints}
-            onChangeText={changeMaxPoints}
-            keyboardType="numeric"
-          />
         </View>
         <View style={styles.settingItem}>
           <Text style={styles.settingText}>{getTranslation('settingsPremium')}</Text>
@@ -113,6 +130,13 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     marginTop: 50,
   },
+  catTitle: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: 'white',
+    marginBottom: 20,
+    marginTop: 20,
+  },
   settingItem: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -121,7 +145,12 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   settingText: {
-    fontSize: 18,
+    fontSize: 20,
+    color: 'white',
+  },
+  settingsubText: {
+    marginTop: 25,
+    fontSize: 12,
     color: 'white',
   },
   languageContainer: {

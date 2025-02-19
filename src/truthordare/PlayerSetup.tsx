@@ -59,10 +59,10 @@ const PlayerSetup = () => {
           renderItem={({ item }) => (
             <View style={styles.playerItemContainer}>
               <Text style={styles.playerItem}>
-                {item.name} ({item.gender})
+                {item.name} ({item.gender === 'männlich' ? '♂' : '♀'})
               </Text>
               <TouchableOpacity onPress={() => removePlayer(item.id)}>
-                <Ionicons name="close-circle" size={24} color="white" />
+                <Ionicons name="close-circle" size={30} color="white" />
               </TouchableOpacity>
             </View>
           )}
@@ -91,7 +91,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    padding: 20,
     width: '100%',
   },
   title: {
@@ -152,7 +151,7 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: 'white',
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: 'bold',
   },
   playerItemContainer: {

@@ -4,7 +4,7 @@ import ProgressBar from 'react-native-progress/Bar';
 import { RouteProp, useRoute, useNavigation } from '@react-navigation/native';
 import { RootStackParamList } from '../navigation/MainNavigator';
 import ConfettiCannon from 'react-native-confetti-cannon';
-import { questions } from '../data/questions';
+import { truthordare_questions_german } from '../data/questions';
 import { settings } from '../data/settings';
 import { appdata } from '../data/appdata';
 import { getTranslation } from '../utils/translationHelper';
@@ -41,7 +41,7 @@ const GameScreen = () => {
 
   const getRandomQuestion = (type: 'truth' | 'dare') => {
     const randomLevel = levels[Math.floor(Math.random() * levels.length)];
-    const questionArray = questions[`level${randomLevel}`][type];
+    const questionArray = truthordare_questions_german[`level${randomLevel}`][type];
     const randomIndex = Math.floor(Math.random() * questionArray.length);
     setCurrentLevel(randomLevel);
     return questionArray[randomIndex];
@@ -116,7 +116,7 @@ const GameScreen = () => {
     if (isTruth !== null) {
       const question = getRandomQuestion(isTruth ? 'truth' : 'dare');
       setCurrentQuestion(question.question);
-      setTimer(question.timer || 0); // Verwende den Timer der Frage oder den Standard-Timer
+      setTimer(question.timer || settings.maxTime); // Verwende den Timer der Frage oder den Standard-Timer
     }
   }, [isTruth]);
 
@@ -165,6 +165,11 @@ const GameScreen = () => {
         {/* Spielername */}
         <Text style={styles.currentPlayerText}>{currentPlayer.name} {getTranslation('truthordareGameCurrentPlayer')}</Text>
 
+        {/* Level-Anzeige */}
+        {currentLevel !== null && isTruth !== null && (
+          <Text style={styles.levelText}>{getTranslation('truthordareCurrentLevel')} {getTranslation('truthordareLevel' + currentLevel)}</Text>
+        )}
+
         {/* Wahrheit und Pflicht Auswahl */}
         {isTruth === null && (
           <View style={styles.choiceContainer}>
@@ -180,11 +185,6 @@ const GameScreen = () => {
         {/* Frage / Aufgabe */}
         {currentQuestion !== '' && (
           <Text style={styles.questionText}>{currentQuestion}</Text>
-        )}
-
-        {/* Level-Anzeige */}
-        {currentLevel !== null && (
-          <Text style={styles.levelText}>{getTranslation('truthordareCurrentLevel')} {getTranslation('truthordareLevel' + currentLevel)}</Text>
         )}
 
         {/* Timer */}
@@ -318,13 +318,16 @@ const styles = StyleSheet.create({
   },
   truthButton: {
     backgroundColor: '#007bff',
+    textAlign: 'center',
   },
   dareButton: {
     backgroundColor: '#e83e8c',
+    textAlign: 'center',
   },
   choiceButtonText: {
     color: '#fff',
     fontSize: 35,
+    textAlign: 'center',
   },
   startTimerButton: {
     backgroundColor: '#007bff',
@@ -345,16 +348,20 @@ const styles = StyleSheet.create({
     paddingHorizontal: 30,
     marginTop: 30,
     borderRadius: 10,
+    textAlign: 'center',
   },
   successButton: {
     backgroundColor: '#28a745',
+    textAlign: 'center',
   },
   failButton: {
     backgroundColor: '#6c757d',
+    textAlign: 'center',
   },
   resultButtonText: {
     color: '#fff',
     fontSize: 30,
+    textAlign: 'center',
   },
   pointsChangeContainer: {
     position: 'absolute',
