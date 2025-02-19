@@ -14,7 +14,7 @@ type GameScreenRouteProp = RouteProp<RootStackParamList, 'GameScreen'>;
 const GameScreen = () => {
   const route = useRoute<GameScreenRouteProp>();
   const navigation = useNavigation();
-  const { level, players: initialPlayers, type } = route.params ?? { level: 1, players: [], type: 'duo' };
+  const { levels, players: initialPlayers, type } = route.params ?? { levels: [1], players: [], type: 'duo' };
 
   // Ensure each player has a points property
   const playersWithPoints = initialPlayers.map(player => ({
@@ -24,23 +24,26 @@ const GameScreen = () => {
 
   const maxPoints = settings.maxPoints;
 
-  const levelQuestions = level === 1 ? questions.level1 : questions.level2;
-
   const [players, setPlayers] = useState(playersWithPoints);
   const [currentPlayerIndex, setCurrentPlayerIndex] = useState(0);
   const [currentQuestion, setCurrentQuestion] = useState('');
+  const [currentLevel, setCurrentLevel] = useState<number | null>(null);
   const [isTruth, setIsTruth] = useState<boolean | null>(null);
   const [showConfetti, setShowConfetti] = useState(false);
   const [timer, setTimer] = useState(30); // Default Timer in Sekunden
   const [timerStarted, setTimerStarted] = useState(false);
+  const [timerExpired, setTimerExpired] = useState(false);
+  const [pointsChange, setPointsChange] = useState<number | null>(null);
   const confettiRef = useRef(null);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
 
   const currentPlayer = players[currentPlayerIndex];
 
   const getRandomQuestion = (type: 'truth' | 'dare') => {
-    const questionArray = levelQuestions[type];
+    const randomLevel = levels[Math.floor(Math.random() * levels.length)];
+    const questionArray = questions[`level${randomLevel}`][type];
     const randomIndex = Math.floor(Math.random() * questionArray.length);
+    setCurrentLevel(randomLevel);
     return questionArray[randomIndex];
   };
 
@@ -51,6 +54,7 @@ const GameScreen = () => {
     setCurrentQuestion('');
     setTimer(30); // Reset Timer
     setTimerStarted(false);
+    setTimerExpired(false);
   };
 
   const updatePoints = (success: boolean) => {
@@ -66,7 +70,8 @@ const GameScreen = () => {
     };
   
     setPlayers(updatedPlayers);
-  
+    setPointsChange(success ? pointChange : -pointChange);
+
     // Spielende prüfen
     if (newPoints >= maxPoints) {
       setShowConfetti(true);
@@ -104,13 +109,14 @@ const GameScreen = () => {
     setShowConfetti(false);
     setTimer(30); // Reset Timer
     setTimerStarted(false);
+    setTimerExpired(false);
   };
 
   useEffect(() => {
     if (isTruth !== null) {
       const question = getRandomQuestion(isTruth ? 'truth' : 'dare');
       setCurrentQuestion(question.question);
-      setTimer(question.timer || 30); // Verwende den Timer der Frage oder den Standard-Timer
+      setTimer(question.timer || 0); // Verwende den Timer der Frage oder den Standard-Timer
     }
   }, [isTruth]);
 
@@ -120,8 +126,8 @@ const GameScreen = () => {
         setTimer(prevTimer => {
           if (prevTimer <= 1) {
             clearInterval(timerRef.current!);
-            updatePoints(false); // Wenn der Timer abläuft, gilt die Aufgabe als nicht erfüllt
-            return 30; // Reset Timer
+            setTimerExpired(true); // Timer abgelaufen
+            return 0; // Reset Timer
           }
           return prevTimer - 1;
         });
@@ -133,8 +139,17 @@ const GameScreen = () => {
     return () => clearInterval(timerRef.current!);
   }, [currentQuestion, timerStarted, timer]);
 
+  useEffect(() => {
+    if (pointsChange !== null) {
+      const timeout = setTimeout(() => {
+        setPointsChange(null);
+      }, 5000); // Meldung nach 5 Sekunden ausblenden
+      return () => clearTimeout(timeout);
+    }
+  }, [pointsChange]);
+
   return (
-      <ImageBackground source={appdata.appBackground} style={styles.background}>
+    <ImageBackground source={appdata.appBackground} style={styles.background}>
       <View style={styles.container}>
         {/* Punkte-Anzeige als Bar */}
         <View style={styles.pointsContainer}>
@@ -151,18 +166,25 @@ const GameScreen = () => {
         <Text style={styles.currentPlayerText}>{currentPlayer.name} {getTranslation('truthordareGameCurrentPlayer')}</Text>
 
         {/* Wahrheit und Pflicht Auswahl */}
-        <View style={styles.choiceContainer}>
-          <TouchableOpacity onPress={() => setIsTruth(true)} style={[styles.choiceButton, styles.truthButton]}>
-            <Text style={styles.choiceButtonText}>{getTranslation('truthordareGameTruthSelectButton')}</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => setIsTruth(false)} style={[styles.choiceButton, styles.dareButton]}>
-            <Text style={styles.choiceButtonText}>{getTranslation('truthordareGameDareSelectButton')}</Text>
-          </TouchableOpacity>
-        </View>
+        {isTruth === null && (
+          <View style={styles.choiceContainer}>
+            <TouchableOpacity onPress={() => setIsTruth(true)} style={[styles.choiceButton, styles.truthButton]}>
+              <Text style={styles.choiceButtonText}>{getTranslation('truthordareGameTruthSelectButton')}</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => setIsTruth(false)} style={[styles.choiceButton, styles.dareButton]}>
+              <Text style={styles.choiceButtonText}>{getTranslation('truthordareGameDareSelectButton')}</Text>
+            </TouchableOpacity>
+          </View>
+        )}
 
         {/* Frage / Aufgabe */}
         {currentQuestion !== '' && (
           <Text style={styles.questionText}>{currentQuestion}</Text>
+        )}
+
+        {/* Level-Anzeige */}
+        {currentLevel !== null && (
+          <Text style={styles.levelText}>{getTranslation('truthordareCurrentLevel')} {getTranslation('truthordareLevel' + currentLevel)}</Text>
         )}
 
         {/* Timer */}
@@ -177,15 +199,33 @@ const GameScreen = () => {
           </TouchableOpacity>
         )}
 
+        {/* Timer abgelaufen */}
+        {timerExpired && (
+          <Text style={styles.timerExpiredText}>{getTranslation('truthordareGameTimerExpired')}</Text>
+        )}
+
         {/* Erfolgs-/Versagen-Buttons */}
         {currentQuestion !== '' && (
           <View style={styles.resultContainer}>
             <TouchableOpacity onPress={() => updatePoints(true)} style={[styles.resultButton, styles.successButton]}>
-              <Text style={styles.resultButtonText}>{getTranslation('truthordareGameSuccessButton')}</Text>
+              <Text style={styles.resultButtonText}>
+                {isTruth ? getTranslation('truthordareGameTruthSuccessButton') : getTranslation('truthordareGameDareSuccessButton')}
+              </Text>
             </TouchableOpacity>
             <TouchableOpacity onPress={() => updatePoints(false)} style={[styles.resultButton, styles.failButton]}>
-              <Text style={styles.resultButtonText}>{getTranslation('truthordareGameFailButton')}</Text>
+              <Text style={styles.resultButtonText}>
+                {isTruth ? getTranslation('truthordareGameTruthFailButton') : getTranslation('truthordareGameDareFailButton')}
+              </Text>
             </TouchableOpacity>
+          </View>
+        )}
+
+        {/* Punkteänderung-Meldung */}
+        {pointsChange !== null && (
+          <View style={styles.pointsChangeContainer}>
+            <Text style={styles.pointsChangeText}>
+              {pointsChange > 0 ? `+${pointsChange} ${getTranslation('truthordareGamePoints')}` : `${pointsChange} ${getTranslation('truthordareGamePoints')}`}
+            </Text>
           </View>
         )}
 
@@ -233,38 +273,48 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   pointsText: {
-    fontSize: 16,
+    fontSize: 20,
     color: 'white',
     marginTop: 10,
   },
   currentPlayerText: {
-    fontSize: 24,
+    fontSize: 30,
     fontWeight: 'bold',
     color: 'white',
     marginBottom: 20,
   },
   questionText: {
-    fontSize: 20,
+    fontSize: 40,
     color: 'white',
     marginBottom: 30,
     textAlign: 'center',
+    paddingBottom: 15,
+    paddingTop: 15,
+    paddingRight: 15,
+    paddingLeft: 15,
+    backgroundColor: 'rgba(107, 107, 107, 0.5)'
   },
   timerText: {
-    fontSize: 20,
+    fontSize: 30,
     color: '#f5f5f5',
     fontWeight: 'bold',
     marginBottom: 20,
   },
+  timerExpiredText: {
+    fontSize: 30,
+    color: 'red',
+    fontWeight: 'bold',
+    marginBottom: 20,
+  },
   choiceContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    width: '100%',
     marginBottom: 30,
+    alignItems: 'center',
   },
   choiceButton: {
     paddingVertical: 15,
     paddingHorizontal: 30,
     borderRadius: 10,
+    marginTop: 30,
   },
   truthButton: {
     backgroundColor: '#007bff',
@@ -274,7 +324,7 @@ const styles = StyleSheet.create({
   },
   choiceButtonText: {
     color: '#fff',
-    fontSize: 18,
+    fontSize: 35,
   },
   startTimerButton: {
     backgroundColor: '#007bff',
@@ -285,16 +335,15 @@ const styles = StyleSheet.create({
   },
   startTimerButtonText: {
     color: '#fff',
-    fontSize: 18,
+    fontSize: 30,
   },
   resultContainer: {
-    flexDirection: 'row',
     justifyContent: 'space-around',
-    width: '100%',
   },
   resultButton: {
     paddingVertical: 15,
     paddingHorizontal: 30,
+    marginTop: 30,
     borderRadius: 10,
   },
   successButton: {
@@ -305,7 +354,25 @@ const styles = StyleSheet.create({
   },
   resultButtonText: {
     color: '#fff',
-    fontSize: 18,
+    fontSize: 30,
+  },
+  pointsChangeContainer: {
+    position: 'absolute',
+    top: 50,
+    right: 10,
+    backgroundColor: 'rgba(0, 0, 0, 0.7)',
+    padding: 10,
+    borderRadius: 5,
+  },
+  pointsChangeText: {
+    color: 'white',
+    fontSize: 16,
+  },
+  levelText: {
+    fontSize: 20,
+    color: '#f5f5f5',
+    fontWeight: 'bold',
+    marginBottom: 20,
   },
 });
 

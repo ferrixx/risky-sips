@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, FlatList, StyleSheet, Alert, ImageBackground } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { settings } from '../data/settings';
@@ -28,10 +28,17 @@ const LevelSelection = () => {
   const navigation = useNavigation();
   const route = useRoute();
   const { players, type } = route.params;
+  const [selectedLevels, setSelectedLevels] = useState([]);
 
   const handleLevelSelect = (level) => {
     if (level.isFree || settings.isPremium) {
-      navigation.navigate('GameScreen', { level: level.id, players, type });
+      setSelectedLevels((prevSelectedLevels) => {
+        if (prevSelectedLevels.includes(level.id)) {
+          return prevSelectedLevels.filter((id) => id !== level.id);
+        } else {
+          return [...prevSelectedLevels, level.id];
+        }
+      });
     } else {
       Alert.alert(
         'Level kaufen',
@@ -41,6 +48,14 @@ const LevelSelection = () => {
           { text: 'Kaufen', onPress: () => Alert.alert('Gekauft!', 'Viel Spaß mit dem Level!') }
         ]
       );
+    }
+  };
+
+  const handleStartGame = () => {
+    if (selectedLevels.length === 0) {
+      Alert.alert('Keine Level ausgewählt', 'Bitte wähle mindestens ein Level aus.');
+    } else {
+      navigation.navigate('GameScreen', { levels: selectedLevels, players, type });
     }
   };
 
@@ -58,14 +73,23 @@ const LevelSelection = () => {
                 <Text style={styles.levelName}>{getTranslation(item.name)}</Text>
               </View>
               <TouchableOpacity 
-                style={[styles.playButton, item.isFree || settings.isPremium ? styles.freeButton : styles.paidButton]} 
+                style={[
+                  styles.playButton, 
+                  item.isFree || settings.isPremium ? styles.freeButton : styles.paidButton,
+                  selectedLevels.includes(item.id) && styles.selectedButton
+                ]} 
                 onPress={() => handleLevelSelect(item)}
               >
-                <Animatable.Text animation="pulse" iterationCount="infinite" style={styles.buttonText}>{getTranslation('truthordareLevelSelect')}</Animatable.Text>
+                <Animatable.Text animation="pulse" iterationCount="infinite" style={styles.buttonText}>
+                  {selectedLevels.includes(item.id) ? getTranslation('truthordareLevelSelected') : getTranslation('truthordareLevelSelect')}
+                </Animatable.Text>
               </TouchableOpacity>
             </Animatable.View>
           )}
         />
+        <TouchableOpacity style={styles.startGameButton} onPress={handleStartGame}>
+          <Text style={styles.startGameButtonText}>{getTranslation('truthordareStartGame')}</Text>
+        </TouchableOpacity>
       </View>
     </ImageBackground>
   );
@@ -142,6 +166,9 @@ const styles = StyleSheet.create({
   paidButton: {
     backgroundColor: '#ffc107',
   },
+  selectedButton: {
+    backgroundColor: '#007bff',
+  },
   buttonText: {
     color: 'white',
     fontSize: 16,
@@ -149,6 +176,18 @@ const styles = StyleSheet.create({
     textShadowColor: 'rgba(0, 0, 0, 0.75)',
     textShadowOffset: { width: -1, height: 1 },
     textShadowRadius: 10,
+  },
+  startGameButton: {
+    marginTop: 20,
+    paddingVertical: 15,
+    paddingHorizontal: 30,
+    borderRadius: 10,
+    backgroundColor: '#007bff',
+  },
+  startGameButtonText: {
+    color: 'white',
+    fontSize: 18,
+    fontWeight: 'bold',
   },
 });
 
