@@ -6,6 +6,7 @@ import * as Animatable from 'react-native-animatable';
 import { Ionicons } from '@expo/vector-icons';
 import { appdata } from '../data/appdata';
 import { getTranslation } from '../utils/translationHelper';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 const levels = {
   duo: [
@@ -69,7 +70,7 @@ const LevelSelection = () => {
           renderItem={({ item }) => (
             <Animatable.View animation="fadeInUp" style={styles.levelItem}>
               <View style={styles.levelInfo}>
-                <Ionicons name={item.icon} size={24} color="#333" style={styles.levelIcon} />
+                <Ionicons name={item.icon} size={wp('6%')} color="#333" style={styles.levelIcon} />
                 <Text style={styles.levelName}>{getTranslation(item.name)}</Text>
               </View>
               <TouchableOpacity 
@@ -106,16 +107,16 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    padding: 20,
+    padding: wp('5%'),
     width: '100%',
   },
   title: {
-    fontSize: 32,
+    fontSize: wp('8%'),
     fontWeight: 'bold',
     color: 'white',
-    marginBottom: 20,
+    marginBottom: hp('2%'),
     textAlign: 'center',
-    marginTop: 50,
+    marginTop: hp('10%'),
     textShadowColor: 'rgba(0, 0, 0, 0.75)',
     textShadowOffset: { width: -1, height: 1 },
     textShadowRadius: 10,
@@ -124,10 +125,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    padding: 15,
-    marginVertical: 10,
+    padding: wp('4%'),
+    marginVertical: hp('1%'),
     backgroundColor: '#fff',
-    borderRadius: 10,
+    borderRadius: wp('2.5%'),
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.3,
@@ -143,17 +144,17 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   levelIcon: {
-    marginRight: 10,
+    marginRight: wp('2%'),
   },
   levelName: {
-    fontSize: 20,
+    fontSize: wp('5%'),
     color: '#333',
     fontWeight: 'bold',
   },
   playButton: {
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    borderRadius: 10,
+    paddingVertical: hp('1.5%'),
+    paddingHorizontal: wp('5%'),
+    borderRadius: wp('2.5%'),
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.3,
@@ -171,23 +172,23 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: 'white',
-    fontSize: 16,
+    fontSize: wp('4%'),
     fontWeight: 'bold',
     textShadowColor: 'rgba(0, 0, 0, 0.75)',
     textShadowOffset: { width: -1, height: 1 },
     textShadowRadius: 10,
   },
   startGameButton: {
-    marginTop: 20,
-    marginBottom: 20,
-    paddingVertical: 15,
-    paddingHorizontal: 30,
-    borderRadius: 10,
+    marginTop: hp('2%'),
+    marginBottom: hp('2%'),
+    paddingVertical: hp('2%'),
+    paddingHorizontal: wp('7.5%'),
+    borderRadius: wp('2.5%'),
     backgroundColor: '#007bff',
   },
   startGameButtonText: {
     color: 'white',
-    fontSize: 25,
+    fontSize: wp('6%'),
     fontWeight: 'bold',
   },
 });

@@ -2,12 +2,12 @@ import React, { useState, useEffect, useRef } from 'react';
 import { View, Text, TouchableOpacity, Alert, StyleSheet, ImageBackground } from 'react-native';
 import ProgressBar from 'react-native-progress/Bar';
 import { RouteProp, useRoute, useNavigation } from '@react-navigation/native';
-import { RootStackParamList } from '../navigation/MainNavigator';
 import ConfettiCannon from 'react-native-confetti-cannon';
 import { truthordare_questions_german } from '../data/questions';
 import { settings } from '../data/settings';
 import { appdata } from '../data/appdata';
 import { getTranslation } from '../utils/translationHelper';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 type GameScreenRouteProp = RouteProp<RootStackParamList, 'GameScreen'>;
 
@@ -16,7 +16,6 @@ const GameScreen = () => {
   const navigation = useNavigation();
   const { levels, players: initialPlayers, type } = route.params ?? { levels: [1], players: [], type: 'duo' };
 
-  // Ensure each player has a points property
   const playersWithPoints = initialPlayers.map(player => ({
     ...player,
     points: player.points || 0,
@@ -30,7 +29,7 @@ const GameScreen = () => {
   const [currentLevel, setCurrentLevel] = useState<number | null>(null);
   const [isTruth, setIsTruth] = useState<boolean | null>(null);
   const [showConfetti, setShowConfetti] = useState(false);
-  const [timer, setTimer] = useState(30); // Default Timer in Sekunden
+  const [timer, setTimer] = useState(30);
   const [timerStarted, setTimerStarted] = useState(false);
   const [timerExpired, setTimerExpired] = useState(false);
   const [pointsChange, setPointsChange] = useState<number | null>(null);
@@ -52,13 +51,13 @@ const GameScreen = () => {
     setCurrentPlayerIndex(nextIndex);
     setIsTruth(null);
     setCurrentQuestion('');
-    setTimer(30); // Reset Timer
+    setTimer(30);
     setTimerStarted(false);
     setTimerExpired(false);
   };
 
   const updatePoints = (success: boolean) => {
-    const pointChange = Math.floor(Math.random() * 11) + 5; // Random zwischen 5 und 15
+    const pointChange = Math.floor(Math.random() * 11) + 5;
     const newPoints = success
       ? currentPlayer.points + pointChange
       : currentPlayer.points - pointChange;
@@ -72,7 +71,6 @@ const GameScreen = () => {
     setPlayers(updatedPlayers);
     setPointsChange(success ? pointChange : -pointChange);
 
-    // Spielende prüfen
     if (newPoints >= maxPoints) {
       setShowConfetti(true);
       Alert.alert(
@@ -107,7 +105,7 @@ const GameScreen = () => {
     setIsTruth(null);
     setCurrentQuestion('');
     setShowConfetti(false);
-    setTimer(30); // Reset Timer
+    setTimer(30);
     setTimerStarted(false);
     setTimerExpired(false);
   };
@@ -116,7 +114,7 @@ const GameScreen = () => {
     if (isTruth !== null) {
       const question = getRandomQuestion(isTruth ? 'truth' : 'dare');
       setCurrentQuestion(question.question);
-      setTimer(question.timer || settings.maxTime); // Verwende den Timer der Frage oder den Standard-Timer
+      setTimer(question.timer || settings.maxTime);
     }
   }, [isTruth]);
 
@@ -126,8 +124,8 @@ const GameScreen = () => {
         setTimer(prevTimer => {
           if (prevTimer <= 1) {
             clearInterval(timerRef.current!);
-            setTimerExpired(true); // Timer abgelaufen
-            return 0; // Reset Timer
+            setTimerExpired(true);
+            return 0;
           }
           return prevTimer - 1;
         });
@@ -143,7 +141,7 @@ const GameScreen = () => {
     if (pointsChange !== null) {
       const timeout = setTimeout(() => {
         setPointsChange(null);
-      }, 5000); // Meldung nach 5 Sekunden ausblenden
+      }, 5000);
       return () => clearTimeout(timeout);
     }
   }, [pointsChange]);
@@ -151,26 +149,22 @@ const GameScreen = () => {
   return (
     <ImageBackground source={appdata.appBackground} style={styles.background}>
       <View style={styles.container}>
-        {/* Punkte-Anzeige als Bar */}
         <View style={styles.pointsContainer}>
           <ProgressBar 
             progress={currentPlayer.points / maxPoints} 
-            width={300} 
+            width={wp('80%')} 
             color={'#4caf50'} 
-            height={20}
+            height={hp('2%')}
           />
           <Text style={styles.pointsText}>{getTranslation('truthordareGamePoints')} {currentPlayer.points} / {maxPoints}</Text>
         </View>
 
-        {/* Spielername */}
         <Text style={styles.currentPlayerText}>{currentPlayer.name} {getTranslation('truthordareGameCurrentPlayer')}</Text>
 
-        {/* Level-Anzeige */}
         {currentLevel !== null && isTruth !== null && (
           <Text style={styles.levelText}>{getTranslation('truthordareCurrentLevel')} {getTranslation('truthordareLevel' + currentLevel)}</Text>
         )}
 
-        {/* Wahrheit und Pflicht Auswahl */}
         {isTruth === null && (
           <View style={styles.choiceContainer}>
             <TouchableOpacity onPress={() => setIsTruth(true)} style={[styles.choiceButton, styles.truthButton]}>
@@ -182,29 +176,24 @@ const GameScreen = () => {
           </View>
         )}
 
-        {/* Frage / Aufgabe */}
         {currentQuestion !== '' && (
           <Text style={styles.questionText}>{currentQuestion}</Text>
         )}
 
-        {/* Timer */}
         {currentQuestion !== '' && timer > 0 && (
           <Text style={styles.timerText}>{getTranslation('truthordareGameTimer')}: {timer} {getTranslation('truthordareGameTimerSeconds')}</Text>
         )}
 
-        {/* Timer-Start-Button */}
         {currentQuestion !== '' && timer > 0 && !timerStarted && (
           <TouchableOpacity onPress={() => setTimerStarted(true)} style={styles.startTimerButton}>
             <Text style={styles.startTimerButtonText}>{getTranslation('truthordareGameTimerStartButton')}</Text>
           </TouchableOpacity>
         )}
 
-        {/* Timer abgelaufen */}
         {timerExpired && (
           <Text style={styles.timerExpiredText}>{getTranslation('truthordareGameTimerExpired')}</Text>
         )}
 
-        {/* Erfolgs-/Versagen-Buttons */}
         {currentQuestion !== '' && (
           <View style={styles.resultContainer}>
             <TouchableOpacity onPress={() => updatePoints(true)} style={[styles.resultButton, styles.successButton]}>
@@ -220,7 +209,6 @@ const GameScreen = () => {
           </View>
         )}
 
-        {/* Punkteänderung-Meldung */}
         {pointsChange !== null && (
           <View style={styles.pointsChangeContainer}>
             <Text style={styles.pointsChangeText}>
@@ -229,7 +217,6 @@ const GameScreen = () => {
           </View>
         )}
 
-        {/* Konfetti */}
         {showConfetti && (
           <ConfettiCannon
             count={200}
@@ -258,63 +245,63 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    padding: 20,
+    padding: wp('5%'),
     width: '100%',
   },
   pointsContainer: {
     width: '100%',
     alignItems: 'center',
-    marginBottom: 20,
+    marginBottom: hp('2%'),
   },
   pointsTitle: {
-    fontSize: 18,
+    fontSize: wp('4.5%'),
     fontWeight: 'bold',
     color: 'white',
-    marginBottom: 10,
+    marginBottom: hp('1%'),
   },
   pointsText: {
-    fontSize: 20,
+    fontSize: wp('5%'),
     color: 'white',
-    marginTop: 10,
+    marginTop: hp('1%'),
   },
   currentPlayerText: {
-    fontSize: 30,
+    fontSize: wp('7.5%'),
     fontWeight: 'bold',
     color: 'white',
-    marginBottom: 20,
+    marginBottom: hp('2%'),
   },
   questionText: {
-    fontSize: 40,
+    fontSize: wp('10%'),
     color: 'white',
-    marginBottom: 30,
+    marginBottom: hp('3%'),
     textAlign: 'center',
-    paddingBottom: 15,
-    paddingTop: 15,
-    paddingRight: 15,
-    paddingLeft: 15,
+    paddingBottom: hp('2%'),
+    paddingTop: hp('2%'),
+    paddingRight: wp('2%'),
+    paddingLeft: wp('2%'),
     backgroundColor: 'rgba(107, 107, 107, 0.5)'
   },
   timerText: {
-    fontSize: 30,
+    fontSize: wp('7.5%'),
     color: '#f5f5f5',
     fontWeight: 'bold',
-    marginBottom: 20,
+    marginBottom: hp('2%'),
   },
   timerExpiredText: {
-    fontSize: 30,
+    fontSize: wp('7.5%'),
     color: 'red',
     fontWeight: 'bold',
-    marginBottom: 20,
+    marginBottom: hp('2%'),
   },
   choiceContainer: {
-    marginBottom: 30,
+    marginBottom: hp('3%'),
     alignItems: 'center',
   },
   choiceButton: {
-    paddingVertical: 15,
-    paddingHorizontal: 30,
-    borderRadius: 10,
-    marginTop: 30,
+    paddingVertical: hp('2%'),
+    paddingHorizontal: wp('7.5%'),
+    borderRadius: wp('2.5%'),
+    marginTop: hp('3%'),
   },
   truthButton: {
     backgroundColor: '#007bff',
@@ -326,28 +313,28 @@ const styles = StyleSheet.create({
   },
   choiceButtonText: {
     color: '#fff',
-    fontSize: 35,
+    fontSize: wp('7%'),
     textAlign: 'center',
   },
   startTimerButton: {
     backgroundColor: '#007bff',
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    borderRadius: 10,
-    marginBottom: 20,
+    paddingVertical: hp('1.5%'),
+    paddingHorizontal: wp('5%'),
+    borderRadius: wp('2.5%'),
+    marginBottom: hp('2%'),
   },
   startTimerButtonText: {
     color: '#fff',
-    fontSize: 30,
+    fontSize: wp('7.5%'),
   },
   resultContainer: {
     justifyContent: 'space-around',
   },
   resultButton: {
-    paddingVertical: 15,
-    paddingHorizontal: 30,
-    marginTop: 30,
-    borderRadius: 10,
+    paddingVertical: hp('2%'),
+    paddingHorizontal: wp('7.5%'),
+    marginTop: hp('3%'),
+    borderRadius: wp('2.5%'),
     textAlign: 'center',
   },
   successButton: {
@@ -360,26 +347,26 @@ const styles = StyleSheet.create({
   },
   resultButtonText: {
     color: '#fff',
-    fontSize: 30,
+    fontSize: wp('6.5%'),
     textAlign: 'center',
   },
   pointsChangeContainer: {
     position: 'absolute',
-    top: 50,
-    right: 10,
+    top: hp('6%'),
+    right: wp('2.5%'),
     backgroundColor: 'rgba(0, 0, 0, 0.7)',
-    padding: 10,
-    borderRadius: 5,
+    padding: wp('2.5%'),
+    borderRadius: wp('1.25%'),
   },
   pointsChangeText: {
     color: 'white',
-    fontSize: 16,
+    fontSize: wp('4%'),
   },
   levelText: {
-    fontSize: 20,
+    fontSize: wp('5%'),
     color: '#f5f5f5',
     fontWeight: 'bold',
-    marginBottom: 20,
+    marginBottom: hp('2%'),
   },
 });
 

@@ -4,6 +4,7 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import { appdata } from '../data/appdata';
 import { getTranslation } from '../utils/translationHelper';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 const PlayerSetup = () => {
   const [name, setName] = useState('');
@@ -26,7 +27,7 @@ const PlayerSetup = () => {
   };
 
   return (
-        <ImageBackground source={appdata.appBackground} style={styles.background}>
+    <ImageBackground source={appdata.appBackground} style={styles.background}>
       <View style={styles.container}>
         <Text style={styles.title}>{getTranslation('truthordarePlayerSetupTitle')}</Text>
         <TextInput 
@@ -94,34 +95,34 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   title: {
-    fontSize: 32,
+    fontSize: wp('8%'),
     fontWeight: 'bold',
     color: 'white',
-    marginBottom: 20,
+    marginBottom: hp('2%'),
     textAlign: 'center',
-    marginTop: 100,
+    marginTop: hp('10%'),
   },
   input: {
     borderWidth: 1,
     borderColor: '#ccc',
-    padding: 10,
-    borderRadius: 5,
-    marginBottom: 10,
+    padding: hp('1.5%'),
+    borderRadius: wp('2.5%'),
+    marginBottom: hp('1%'),
     width: '80%',
     backgroundColor: 'white',
   },
   buttonContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginBottom: 20,
+    marginBottom: hp('2%'),
     width: '80%',
   },
   genderButton: {
     flex: 1,
-    paddingVertical: 15,
-    paddingHorizontal: 30,
-    borderRadius: 10,
-    marginHorizontal: 5,
+    paddingVertical: hp('2%'),
+    paddingHorizontal: wp('7.5%'),
+    borderRadius: wp('2.5%'),
+    marginHorizontal: wp('1%'),
     backgroundColor: '#ccc',
     alignItems: 'center',
   },
@@ -130,19 +131,19 @@ const styles = StyleSheet.create({
   },
   addButton: {
     backgroundColor: '#28a745',
-    paddingVertical: 15,
-    paddingHorizontal: 30,
-    borderRadius: 10,
-    marginBottom: 20,
+    paddingVertical: hp('2%'),
+    paddingHorizontal: wp('7.5%'),
+    borderRadius: wp('2.5%'),
+    marginBottom: hp('2%'),
     width: '80%',
     alignItems: 'center',
   },
   nextButton: {
     backgroundColor: '#28a745',
-    paddingVertical: 15,
-    paddingHorizontal: 10,
-    marginBottom: 300,
-    borderRadius: 10,
+    paddingVertical: hp('2%'),
+    paddingHorizontal: wp('2.5%'),
+    marginBottom: hp('30%'),
+    borderRadius: wp('2.5%'),
     width: '80%',
     alignItems: 'center',
   },
@@ -151,7 +152,7 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: 'white',
-    fontSize: 20,
+    fontSize: wp('4%'),
     fontWeight: 'bold',
   },
   playerItemContainer: {
@@ -159,10 +160,10 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     width: '80%',
-    paddingVertical: 5,
+    paddingVertical: hp('0.5%'),
   },
   playerItem: {
-    fontSize: 30,
+    fontSize: wp('7.5%'),
     color: 'white',
   },
 });

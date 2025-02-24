@@ -2,7 +2,8 @@
   "expo": {
     "name": "trinkspiel-app",
     "slug": "riskysips",
-    "version": "0.0.11",
+    "version": "1.0.0",
+    "runtimeVersion": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -19,7 +20,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.ferrixx.riskysips"
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -30,11 +32,11 @@
       }
     },
     "owner": "ferrixx",
-    "runtimeVersion": {
-      "policy": "appVersion"
-    },
     "updates": {
       "url": "https://u.expo.dev/c73f99b6-4336-4323-981c-0e5c5f6ecd20"
-    }
+    },
+    "plugins": [
+      "react-native-iap"
+    ]
   }
 }

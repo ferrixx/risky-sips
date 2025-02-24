@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ImageBackground, Image } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, ImageBackground, Image, Alert } from 'react-native';
 import { useNavigation, useIsFocused } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import * as Animatable from 'react-native-animatable';
@@ -7,6 +7,7 @@ import { settings } from '../data/settings';
 import Constants from 'expo-constants';
 import { getTranslation } from '../utils/translationHelper';
 import { appdata } from '../data/appdata';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 const StartScreen = () => {
   const navigation = useNavigation();
@@ -16,11 +17,15 @@ const StartScreen = () => {
     // Aktualisiere den Bildschirm, wenn er in den Fokus kommt
   }, [isFocused]);
 
+  const handleBottleSpinPress = () => {
+    Alert.alert(getTranslation('developmentTitle'), getTranslation('developmentMessage'));
+  };
+
   return (
     <ImageBackground source={require('../../assets/background.jpg')} style={styles.background}>
       <View style={styles.container}>
         <TouchableOpacity style={styles.settingsButton} onPress={() => navigation.navigate('SettingsScreen')}>
-          <Ionicons name="settings" size={24} color="white" />
+          <Ionicons name="settings" size={wp('6%')} color="white" />
         </TouchableOpacity>
         <Animatable.Text animation="bounceInDown" style={styles.animatedTitle}>
           <Image source={require('../../assets/logo.png')} style={styles.logo} />
@@ -33,17 +38,25 @@ const StartScreen = () => {
           <TouchableOpacity style={styles.startButtonTruthorDare} onPress={() => navigation.navigate('TypeSelection')}>
             <Text style={styles.startButtonText}>{getTranslation('truthordareStart')}</Text>
           </TouchableOpacity>
-          </Animatable.View>
+        </Animatable.View>
         <Animatable.View animation="pulse" iterationCount="infinite">
-          <TouchableOpacity style={styles.startButtonBottleSpin} onPress={() => navigation.navigate('TypeSelection')}>
-          <Text style={styles.startButtonText}>{getTranslation('bottlespinStart')}</Text>
-          </TouchableOpacity>
-          </Animatable.View>
-        <Animatable.View animation="pulse" iterationCount="infinite">
-          <TouchableOpacity style={styles.startButtonDice} onPress={() => navigation.navigate('TypeSelection')}>
-          <Text style={styles.startButtonText}>{getTranslation('diceStart')}</Text>
+          <TouchableOpacity style={styles.startButtonBottleSpin} onPress={handleBottleSpinPress}>
+            <Text style={styles.startButtonText}>{getTranslation('bottlespinStart')}</Text>
           </TouchableOpacity>
         </Animatable.View>
+        <Animatable.View animation="pulse" iterationCount="infinite">
+          <TouchableOpacity style={styles.startButtonDice} onPress={() => navigation.navigate('DiceScreen')}>
+            <Text style={styles.startButtonText}>{getTranslation('diceStart')}</Text>
+          </TouchableOpacity>
+        </Animatable.View>
+        
+        {!settings.isPremium && (
+        <Animatable.View animation="pulse" iterationCount="infinite">
+          <TouchableOpacity style={styles.storeButton} onPress={() => navigation.navigate('StoreScreen')}>
+            <Text style={styles.startButtonText}>{getTranslation('storeButton')}</Text>
+          </TouchableOpacity>
+        </Animatable.View>
+        )}
         <Text style={styles.version}>{getTranslation('version')}: {appdata.version}</Text>
       </View>
     </ImageBackground>
@@ -61,71 +74,79 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    padding: 20,
+    padding: wp('5%'),
     width: '100%',
   },
   settingsButton: {
     position: 'absolute',
-    top: 40,
-    left: 20,
+    top: hp('5%'),
+    left: wp('5%'),
   },
   logo: {
-    width: 250,
-    height: 100,
-    marginBottom: 20,
+    width: wp('80%'),
+    height: hp('15%'),
+    marginBottom: hp('2%'),
   },
   animatedTitle: {
-    fontSize: 40,
+    fontSize: wp('10%'),
     fontWeight: 'bold',
     color: '#00d1ff',
     marginBottom: 0,
     textAlign: 'center',
   },
   title: {
-    fontSize: 32,
+    fontSize: wp('8%'),
     fontWeight: 'bold',
     color: 'white',
-    marginBottom: 100,
+    marginBottom: hp('10%'),
     textAlign: 'center',
   },
   premiumText: {
-    fontSize: 18,
+    fontSize: wp('4.5%'),
     color: 'gold',
-    marginBottom: 20,
+    marginBottom: hp('2%'),
   },
   startButtonTruthorDare: {
     backgroundColor: '#00d1ff',
-    paddingVertical: 15,
-    paddingHorizontal: 30,
-    borderRadius: 10,
-    marginTop: 20,
+    paddingVertical: hp('2%'),
+    paddingHorizontal: wp('7.5%'),
+    borderRadius: wp('2.5%'),
+    marginTop: hp('2%'),
   },
   startButtonBottleSpin: {
     backgroundColor: '#a6ff00',
-    paddingVertical: 15,
-    paddingHorizontal: 30,
-    borderRadius: 10,
-    marginTop: 20,
+    paddingVertical: hp('2%'),
+    paddingHorizontal: wp('7.5%'),
+    borderRadius: wp('2.5%'),
+    marginTop: hp('2%'),
   },
   startButtonDice: {
     backgroundColor: '#e83e8c',
-    paddingVertical: 15,
-    paddingHorizontal: 30,
-    borderRadius: 10,
-    marginTop: 20,
+    paddingVertical: hp('2%'),
+    paddingHorizontal: wp('7.5%'),
+    borderRadius: wp('2.5%'),
+    marginTop: hp('2%'),
+    textAlign: 'center',
+  },
+  storeButton: {
+    backgroundColor: '#ff8c00',
+    paddingVertical: hp('2%'),
+    paddingHorizontal: wp('7.5%'),
+    borderRadius: wp('2.5%'),
+    marginTop: hp('2%'),
     textAlign: 'center',
   },
   startButtonText: {
     color: 'white',
-    fontSize: 25,
+    fontSize: wp('6%'),
     fontWeight: 'bold',
     textAlign: 'center',
   },
   version: {
     position: 'absolute',
-    bottom: 20,
-    left: 20,
-    fontSize: 20,
+    bottom: hp('2%'),
+    left: wp('5%'),
+    fontSize: wp('5%'),
     color: '#fff',
   },
 });

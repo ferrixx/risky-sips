@@ -3,12 +3,13 @@ import { View, Text, TouchableOpacity, StyleSheet, ImageBackground } from 'react
 import { useNavigation } from '@react-navigation/native';
 import { appdata } from '../data/appdata';
 import { getTranslation } from '../utils/translationHelper';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 const TypeSelection = () => {
   const navigation = useNavigation();
 
   return (
-      <ImageBackground source={appdata.appBackground} style={styles.background}>
+    <ImageBackground source={appdata.appBackground} style={styles.background}>
       <View style={styles.container}>
         <Text style={styles.title}>{getTranslation('truthordareTitle')}</Text>
         <TouchableOpacity style={[styles.button, styles.duoButton]} onPress={() => navigation.navigate('PlayerSetup', { type: 'duo' })}>
@@ -33,22 +34,22 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    padding: 20,
+    padding: wp('5%'),
     width: '100%',
   },
   title: {
-    fontSize: 32,
+    fontSize: wp('8%'),
     fontWeight: 'bold',
     color: 'white',
-    marginBottom: 40,
+    marginBottom: hp('5%'),
     textAlign: 'center',
-    marginTop: 50,
+    marginTop: hp('10%'),
   },
   button: {
-    paddingVertical: 15,
-    paddingHorizontal: 30,
-    borderRadius: 10,
-    marginVertical: 10,
+    paddingVertical: hp('2%'),
+    paddingHorizontal: wp('7.5%'),
+    borderRadius: wp('2.5%'),
+    marginVertical: hp('1%'),
     width: '80%',
     alignItems: 'center',
   },
@@ -60,7 +61,7 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: 'white',
-    fontSize: 30,
+    fontSize: wp('7.5%'),
     fontWeight: 'bold',
   },
 });
