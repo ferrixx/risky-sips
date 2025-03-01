@@ -113,11 +113,13 @@ export const translations = {
       Thighs: "Oberschenkel",
       Chest: "Brust",
       Back: "Rücken",
+      Intimate: "Intim",
       Squeeze: "Drücken",
       Span: "Klatschen",
       Lick: "Lecken",
       Pinch: "Kneifen",
       Rub: "Reiben",
+      
     },
     /* ENGLISH */
     en_US: {
@@ -231,6 +233,7 @@ export const translations = {
       Thighs: "Thighs",
       Chest: "Chest",
       Back: "Back",
+      Intimate: "Intim",
       Squeeze: "Squeeze",
       Span: "Spank",
       Lick: "Lick",

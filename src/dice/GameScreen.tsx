@@ -6,7 +6,7 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-nat
 const GameScreen = ({ route }) => {
   const { type } = route.params;
   const bodyParts = type === 'Romantic' ? ['Lips', 'Neck', 'Ears', 'Hands', 'Feet'] : ['Lips', 'Neck', 'Ears', 'Hands', 'Feet'];
-  const actions = type === 'Romantic' ? ['Kiss', 'Massage', 'Nibble', 'Tickle', 'Caress'] : ['Kiss', 'Massage', 'Nibble', 'Tickle', 'Caress'];
+  const actions = type === 'Romantic' ? ['Boobs', 'Butt', 'Thighs', 'Chest', 'Back', 'Intim'] : ['Squeeze', 'Span', 'Lick', 'Pinch', 'Rub', 'Nibble'];
 
   const [bodyPart, setBodyPart] = useState('');
   const [action, setAction] = useState('');
