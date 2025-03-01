@@ -119,6 +119,7 @@ export const translations = {
       Lick: "Lecken",
       Pinch: "Kneifen",
       Rub: "Reiben",
+      Blow: "Blasen",
       
     },
     /* ENGLISH */
@@ -239,5 +240,6 @@ export const translations = {
       Lick: "Lick",
       Pinch: "Pinch",
       Rub: "Rub",
+      Blow: "Blow",
     },
   };
