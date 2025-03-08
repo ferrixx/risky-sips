@@ -1,3 +1,4 @@
+import { Body } from "native-base";
 import { settings } from "./settings"
 
 export const translations = {
@@ -114,13 +115,16 @@ export const translations = {
       Chest: "Brust",
       Back: "Rücken",
       Intimate: "Intim",
+      Body: 'Körper',
       Squeeze: "Drücken",
       Span: "Klatschen",
       Lick: "Lecken",
       Pinch: "Kneifen",
       Rub: "Reiben",
       Blow: "Blasen",
-      
+      Choice: "Eigene Wahl",
+      Touch: "Berühren",
+      Irritate: "Reizen",
     },
     /* ENGLISH */
     en_US: {
@@ -235,11 +239,15 @@ export const translations = {
       Chest: "Chest",
       Back: "Back",
       Intimate: "Intim",
+      Body: 'Body',
       Squeeze: "Squeeze",
       Span: "Spank",
       Lick: "Lick",
       Pinch: "Pinch",
       Rub: "Rub",
       Blow: "Blow",
+      Choice: "Own Choice",
+      Touch: "Touch",
+      Irritate: "Irritate",
     },
   };
