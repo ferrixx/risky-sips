@@ -810,7 +810,9 @@ export const truthordare_questions_german = {
         { question: 'Was würdest du tun, wenn du für eine Nacht tun könntest, was du willst?', timer: 0 },
         { question: 'Hast du schon mal jemanden geküsst, um dich zu rächen?', timer: 0 },
         { question: 'Was war das Dümmste, das du je in einer Beziehung gemacht hast?', timer: 0 },
-        { question: 'Hast du schon mal jemanden ausgenutzt, weil du wusstest, dass du es konntest?', timer: 0 },
+        { question: 'Hast du schon mal jemanden ausgenutzt, weil du wusstest, dass du es konntest?', timer: 0 }
+      ],
+      dare: [
         { question: 'Lass dir von jemandem in der Runde eine peinliche Nachricht an eine beliebige Person aus deinen Kontakten schreiben.', timer: 0 },
         { question: 'Iss einen Esslöffel Senf pur.', timer: 0 },
         { question: 'Zeige deinen letzten Google-Suchverlauf.', timer: 0 },

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, Switch, ImageBackground, TouchableOpacity, TextInput, Alert } from 'react-native';
+import { View, Text, StyleSheet, Switch, ImageBackground, TouchableOpacity, TextInput, Alert, Keyboard } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { settings } from '../data/settings';
 import { appdata } from '../data/appdata';
@@ -74,6 +74,8 @@ const SettingsScreen = () => {
             editable={isPremium}
             onChangeText={changeMaxPoints}
             keyboardType="numeric"
+            returnKeyType='done'
+            onSubmitEditing={Keyboard.dismiss}
           />
         </View>
         <View style={styles.settingItem}>
@@ -84,6 +86,8 @@ const SettingsScreen = () => {
             value={maxTime}
             onChangeText={changeMaxTime}
             keyboardType="numeric"
+            returnKeyType='done'
+            onSubmitEditing={Keyboard.dismiss}
           />
         </View>
         <Text style={styles.catTitle}>{getTranslation('generelSettingsTitle')}</Text>
